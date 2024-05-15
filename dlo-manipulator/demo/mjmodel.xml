@@ -1,0 +1,690 @@
+<mujoco model="unnamed_model">
+  <compiler angle="radian"/>
+  <option impratio="5" integrator="implicitfast"/>
+  <size memory="200M"/>
+  <statistic extent="1" center="0 0 0.3"/>
+  <default class="main">
+    <default class="/"/>
+    <default class="ur5e/">
+      <default class="ur5e/ur5e">
+        <material shininess="0.25"/>
+        <joint range="-6.28319 6.28319" armature="0.1"/>
+        <site size="0.001 0.005 0.005" group="4" rgba="0.5 0.5 0.5 0.3"/>
+        <general ctrlrange="-6.2831 6.2831" forcerange="-150 150" biastype="affine" gainprm="2000" biasprm="0 -2000 -400"/>
+        <default class="ur5e/size3">
+          <default class="ur5e/size3_limited">
+            <joint range="-3.1415 3.1415"/>
+            <general ctrlrange="-3.1415 3.1415"/>
+          </default>
+        </default>
+        <default class="ur5e/size1">
+          <general forcerange="-28 28" gainprm="500" biasprm="0 -500 -100"/>
+        </default>
+        <default class="ur5e/visual">
+          <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+        <default class="ur5e/collision">
+          <geom type="capsule" group="3"/>
+          <default class="ur5e/eef_collision">
+            <geom type="cylinder"/>
+          </default>
+        </default>
+      </default>
+    </default>
+    <default class="ur5e/dh_ag95_gripper/">
+      <joint range="0 0.943"/>
+      <general ctrlrange="0 0.943" forcerange="-5 5" biastype="affine" gainprm="10" biasprm="0 -10 -0.1"/>
+      <default class="ur5e/dh_ag95_gripper/visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+      <default class="ur5e/dh_ag95_gripper/collision">
+        <geom type="mesh" group="3" density="2700"/>
+        <default class="ur5e/dh_ag95_gripper/pad_box_0">
+          <geom priority="1" friction="1.5 0.1 0.0002" solref="0.001" solimp="0.95 0.99" rgba="0.45 0.45 0.45 1"/>
+        </default>
+        <default class="ur5e/dh_ag95_gripper/pad_box_1">
+          <geom priority="1" friction="1.5 0.1 0.0002" solref="0.001" solimp="0.95 0.99" rgba="0.55 0.55 0.55 1"/>
+        </default>
+      </default>
+    </default>
+    <default class="ur5e_1/">
+      <default class="ur5e_1/ur5e">
+        <material shininess="0.25"/>
+        <joint range="-6.28319 6.28319" armature="0.1"/>
+        <site size="0.001 0.005 0.005" group="4" rgba="0.5 0.5 0.5 0.3"/>
+        <general ctrlrange="-6.2831 6.2831" forcerange="-150 150" biastype="affine" gainprm="2000" biasprm="0 -2000 -400"/>
+        <default class="ur5e_1/size3">
+          <default class="ur5e_1/size3_limited">
+            <joint range="-3.1415 3.1415"/>
+            <general ctrlrange="-3.1415 3.1415"/>
+          </default>
+        </default>
+        <default class="ur5e_1/size1">
+          <general forcerange="-28 28" gainprm="500" biasprm="0 -500 -100"/>
+        </default>
+        <default class="ur5e_1/visual">
+          <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+        <default class="ur5e_1/collision">
+          <geom type="capsule" group="3"/>
+          <default class="ur5e_1/eef_collision">
+            <geom type="cylinder"/>
+          </default>
+        </default>
+      </default>
+    </default>
+    <default class="ur5e_1/dh_ag95_gripper/">
+      <joint range="0 0.943"/>
+      <general ctrlrange="0 0.943" forcerange="-5 5" biastype="affine" gainprm="10" biasprm="0 -10 -0.1"/>
+      <default class="ur5e_1/dh_ag95_gripper/visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+      <default class="ur5e_1/dh_ag95_gripper/collision">
+        <geom type="mesh" group="3" density="2700"/>
+        <default class="ur5e_1/dh_ag95_gripper/pad_box_0">
+          <geom priority="1" friction="1.5 0.1 0.0002" solref="0.001" solimp="0.95 0.99" rgba="0.45 0.45 0.45 1"/>
+        </default>
+        <default class="ur5e_1/dh_ag95_gripper/pad_box_1">
+          <geom priority="1" friction="1.5 0.1 0.0002" solref="0.001" solimp="0.95 0.99" rgba="0.55 0.55 0.55 1"/>
+        </default>
+      </default>
+    </default>
+    <default class="Cable/"/>
+    <default class="unnamed_model/"/>
+  </default>
+  <extension>
+    <plugin plugin="mujoco.elasticity.cable">
+      <instance name="compositeCable//unnamed_composite_0">
+        <config key="twist" value="2e5"/>
+        <config key="bend" value="4e5"/>
+        <config key="vmax" value="0.05"/>
+      </instance>
+    </plugin>
+  </extension>
+  <custom>
+    <text name="composite_Cable//unnamed_composite_0" data="rope_Cable//unnamed_composite_0"/>
+  </custom>
+  <asset>
+    <texture type="2d" name="//unnamed_texture_0" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.3 0.4 0.5" width="300" height="300"/>
+    <material name="grid" class="/" texture="//unnamed_texture_0" texrepeat="5 5" reflectance="0.2"/>
+    <material name="ur5e/black" class="ur5e/ur5e" rgba="0.033 0.033 0.033 1"/>
+    <material name="ur5e/jointgray" class="ur5e/ur5e" rgba="0.278 0.278 0.278 1"/>
+    <material name="ur5e/linkgray" class="ur5e/ur5e" rgba="0.82 0.82 0.82 1"/>
+    <material name="ur5e/urblue" class="ur5e/ur5e" rgba="0.49 0.678 0.8 1"/>
+    <material name="ur5e/dh_ag95_gripper/grey" class="ur5e/dh_ag95_gripper/" shininess="0.25" rgba="0.517647 0.537647 0.547647 1"/>
+    <material name="ur5e/dh_ag95_gripper/black" class="ur5e/dh_ag95_gripper/" shininess="0.25" rgba="0.1 0.1 0.1 1"/>
+    <material name="ur5e_1/black" class="ur5e_1/ur5e" rgba="0.033 0.033 0.033 1"/>
+    <material name="ur5e_1/jointgray" class="ur5e_1/ur5e" rgba="0.278 0.278 0.278 1"/>
+    <material name="ur5e_1/linkgray" class="ur5e_1/ur5e" rgba="0.82 0.82 0.82 1"/>
+    <material name="ur5e_1/urblue" class="ur5e_1/ur5e" rgba="0.49 0.678 0.8 1"/>
+    <material name="ur5e_1/dh_ag95_gripper/grey" class="ur5e_1/dh_ag95_gripper/" shininess="0.25" rgba="0.517647 0.537647 0.547647 1"/>
+    <material name="ur5e_1/dh_ag95_gripper/black" class="ur5e_1/dh_ag95_gripper/" shininess="0.25" rgba="0.1 0.1 0.1 1"/>
+    <mesh name="ur5e/base_0" class="ur5e/" file="base_0-5f93152994e0f999174cb75882f556cd760d637d.obj"/>
+    <mesh name="ur5e/base_1" class="ur5e/" file="base_1-b3f3b902ea82c2cd8f1eb4e2f17051a77d0b5aca.obj"/>
+    <mesh name="ur5e/shoulder_0" class="ur5e/" file="shoulder_0-25635560783dbe95ad2c2d801f7124ef051af0fa.obj"/>
+    <mesh name="ur5e/shoulder_1" class="ur5e/" file="shoulder_1-f962752be9057572ca04c7984e63c10cc456d0ff.obj"/>
+    <mesh name="ur5e/shoulder_2" class="ur5e/" file="shoulder_2-0c8ec2edec90effe9fa9769c391e0b34b8e326b8.obj"/>
+    <mesh name="ur5e/upperarm_0" class="ur5e/" file="upperarm_0-d0095589702d42a94da15a099815e565fc4a53bc.obj"/>
+    <mesh name="ur5e/upperarm_1" class="ur5e/" file="upperarm_1-4238cf0fc6ee8840a8b14497d42b5c5169149eaa.obj"/>
+    <mesh name="ur5e/upperarm_2" class="ur5e/" file="upperarm_2-2823c8ca17eae0f83c8ddece34935ff90ddf00ff.obj"/>
+    <mesh name="ur5e/upperarm_3" class="ur5e/" file="upperarm_3-6894ff569985fd22ce3f5a5113ce3e1e6b698a38.obj"/>
+    <mesh name="ur5e/forearm_0" class="ur5e/" file="forearm_0-12f326487f5f3d7b6b47b376292e04d67fba88dd.obj"/>
+    <mesh name="ur5e/forearm_1" class="ur5e/" file="forearm_1-8924861122901b845c6a00bcc7d7d6823e878b6e.obj"/>
+    <mesh name="ur5e/forearm_2" class="ur5e/" file="forearm_2-d59578ed656d29c4c95f50b52227198afa7a56a0.obj"/>
+    <mesh name="ur5e/forearm_3" class="ur5e/" file="forearm_3-c200775ab8a4f4bd1caa22e177a9c08b43d68c62.obj"/>
+    <mesh name="ur5e/wrist1_0" class="ur5e/" file="wrist1_0-046c8a7075dd693b4501daf6f622944d9130ab1e.obj"/>
+    <mesh name="ur5e/wrist1_1" class="ur5e/" file="wrist1_1-857a385bc0c78c12621e8b23198925c16388212d.obj"/>
+    <mesh name="ur5e/wrist1_2" class="ur5e/" file="wrist1_2-b608a06608014b91b7e5e581fea142a762bde488.obj"/>
+    <mesh name="ur5e/wrist2_0" class="ur5e/" file="wrist2_0-c4fb307f6b793fcd764f8ece4d79ba597b35ed15.obj"/>
+    <mesh name="ur5e/wrist2_1" class="ur5e/" file="wrist2_1-a70236a2d42b0bf1da2e7363b2977ebae9d9859c.obj"/>
+    <mesh name="ur5e/wrist2_2" class="ur5e/" file="wrist2_2-752adb14067cdecb847cee843f1938d9b0126a72.obj"/>
+    <mesh name="ur5e/wrist3" class="ur5e/" file="wrist3-950944a2ff757dfae2e61bce281f9639ba70efa6.obj"/>
+    <mesh name="ur5e/dh_ag95_gripper/base_link" class="ur5e/dh_ag95_gripper/" file="base_link-c6b587d21ac530236b992512e7c474f12d3bae77.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e/dh_ag95_gripper/gripper_body" class="ur5e/dh_ag95_gripper/" file="gripper_body-8c65283d5f167714a64781ce092dc00d4515a0b5.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e/dh_ag95_gripper/outer_knuckle" class="ur5e/dh_ag95_gripper/" file="outer_knuckle-d87bff0ce36e4cfeb03598242d3d823c0c04b52c.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e/dh_ag95_gripper/inner_knuckle" class="ur5e/dh_ag95_gripper/" file="inner_knuckle-645e60497f95f83ca7091465434db7d4b249877f.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e/dh_ag95_gripper/finger" class="ur5e/dh_ag95_gripper/" file="finger-616deffd572625c68281d3439700979b2e58db99.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e/dh_ag95_gripper/finger_pad_0" class="ur5e/dh_ag95_gripper/" file="finger_pad_0-df54a0635f5abd3db4b5ad10f7562f9e0e3705d9.stl"/>
+    <mesh name="ur5e/dh_ag95_gripper/finger_pad_1" class="ur5e/dh_ag95_gripper/" file="finger_pad_1-92f8ac2d3ec9e9266356d9bc431aa603a74b7c75.stl"/>
+    <mesh name="ur5e_1/base_0" class="ur5e_1/" file="base_0-5f93152994e0f999174cb75882f556cd760d637d.obj"/>
+    <mesh name="ur5e_1/base_1" class="ur5e_1/" file="base_1-b3f3b902ea82c2cd8f1eb4e2f17051a77d0b5aca.obj"/>
+    <mesh name="ur5e_1/shoulder_0" class="ur5e_1/" file="shoulder_0-25635560783dbe95ad2c2d801f7124ef051af0fa.obj"/>
+    <mesh name="ur5e_1/shoulder_1" class="ur5e_1/" file="shoulder_1-f962752be9057572ca04c7984e63c10cc456d0ff.obj"/>
+    <mesh name="ur5e_1/shoulder_2" class="ur5e_1/" file="shoulder_2-0c8ec2edec90effe9fa9769c391e0b34b8e326b8.obj"/>
+    <mesh name="ur5e_1/upperarm_0" class="ur5e_1/" file="upperarm_0-d0095589702d42a94da15a099815e565fc4a53bc.obj"/>
+    <mesh name="ur5e_1/upperarm_1" class="ur5e_1/" file="upperarm_1-4238cf0fc6ee8840a8b14497d42b5c5169149eaa.obj"/>
+    <mesh name="ur5e_1/upperarm_2" class="ur5e_1/" file="upperarm_2-2823c8ca17eae0f83c8ddece34935ff90ddf00ff.obj"/>
+    <mesh name="ur5e_1/upperarm_3" class="ur5e_1/" file="upperarm_3-6894ff569985fd22ce3f5a5113ce3e1e6b698a38.obj"/>
+    <mesh name="ur5e_1/forearm_0" class="ur5e_1/" file="forearm_0-12f326487f5f3d7b6b47b376292e04d67fba88dd.obj"/>
+    <mesh name="ur5e_1/forearm_1" class="ur5e_1/" file="forearm_1-8924861122901b845c6a00bcc7d7d6823e878b6e.obj"/>
+    <mesh name="ur5e_1/forearm_2" class="ur5e_1/" file="forearm_2-d59578ed656d29c4c95f50b52227198afa7a56a0.obj"/>
+    <mesh name="ur5e_1/forearm_3" class="ur5e_1/" file="forearm_3-c200775ab8a4f4bd1caa22e177a9c08b43d68c62.obj"/>
+    <mesh name="ur5e_1/wrist1_0" class="ur5e_1/" file="wrist1_0-046c8a7075dd693b4501daf6f622944d9130ab1e.obj"/>
+    <mesh name="ur5e_1/wrist1_1" class="ur5e_1/" file="wrist1_1-857a385bc0c78c12621e8b23198925c16388212d.obj"/>
+    <mesh name="ur5e_1/wrist1_2" class="ur5e_1/" file="wrist1_2-b608a06608014b91b7e5e581fea142a762bde488.obj"/>
+    <mesh name="ur5e_1/wrist2_0" class="ur5e_1/" file="wrist2_0-c4fb307f6b793fcd764f8ece4d79ba597b35ed15.obj"/>
+    <mesh name="ur5e_1/wrist2_1" class="ur5e_1/" file="wrist2_1-a70236a2d42b0bf1da2e7363b2977ebae9d9859c.obj"/>
+    <mesh name="ur5e_1/wrist2_2" class="ur5e_1/" file="wrist2_2-752adb14067cdecb847cee843f1938d9b0126a72.obj"/>
+    <mesh name="ur5e_1/wrist3" class="ur5e_1/" file="wrist3-950944a2ff757dfae2e61bce281f9639ba70efa6.obj"/>
+    <mesh name="ur5e_1/dh_ag95_gripper/base_link" class="ur5e_1/dh_ag95_gripper/" file="base_link-c6b587d21ac530236b992512e7c474f12d3bae77.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e_1/dh_ag95_gripper/gripper_body" class="ur5e_1/dh_ag95_gripper/" file="gripper_body-8c65283d5f167714a64781ce092dc00d4515a0b5.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e_1/dh_ag95_gripper/outer_knuckle" class="ur5e_1/dh_ag95_gripper/" file="outer_knuckle-d87bff0ce36e4cfeb03598242d3d823c0c04b52c.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e_1/dh_ag95_gripper/inner_knuckle" class="ur5e_1/dh_ag95_gripper/" file="inner_knuckle-645e60497f95f83ca7091465434db7d4b249877f.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e_1/dh_ag95_gripper/finger" class="ur5e_1/dh_ag95_gripper/" file="finger-616deffd572625c68281d3439700979b2e58db99.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ur5e_1/dh_ag95_gripper/finger_pad_0" class="ur5e_1/dh_ag95_gripper/" file="finger_pad_0-df54a0635f5abd3db4b5ad10f7562f9e0e3705d9.stl"/>
+    <mesh name="ur5e_1/dh_ag95_gripper/finger_pad_1" class="ur5e_1/dh_ag95_gripper/" file="finger_pad_1-92f8ac2d3ec9e9266356d9bc431aa603a74b7c75.stl"/>
+  </asset>
+  <worldbody>
+    <geom name="//unnamed_geom_0" class="/" size="2 2 0.1" type="plane" material="grid"/>
+    <light name="//unnamed_light_0" class="/" pos="-2 -1 3" dir="0.666667 0.333333 -0.666667"/>
+    <light name="//unnamed_light_1" class="/" pos="2 -1 3" dir="-0.666667 0.333333 -0.666667"/>
+    <body name="mocap" mocap="true">
+      <geom name="//unnamed_geom_1" class="/" size="0.015 0.015 0.015" type="box" contype="0" conaffinity="0" rgba="1 0 0 0.2"/>
+    </body>
+    <body name="ur5e/" quat="0.707107 0 0 -0.707107">
+      <light name="ur5e/spotlight" class="ur5e/" target="ur5e/wrist_2_link" pos="0 -1 2" dir="0 0 -1" mode="targetbodycom"/>
+      <body name="ur5e/base" childclass="ur5e/ur5e" quat="0.707107 0 0 0.707107">
+        <inertial pos="0 0 0" mass="4" diaginertia="0.00443333 0.00443333 0.0072"/>
+        <geom name="ur5e//unnamed_geom_0" class="ur5e/visual" material="ur5e/black" mesh="ur5e/base_0"/>
+        <geom name="ur5e//unnamed_geom_1" class="ur5e/visual" material="ur5e/jointgray" mesh="ur5e/base_1"/>
+        <body name="ur5e/shoulder_link" pos="0 0 0.163">
+          <inertial pos="0 0 0" mass="3.7" diaginertia="0.0102675 0.0102675 0.00666"/>
+          <joint name="ur5e/shoulder_pan_joint" class="ur5e/size3" pos="0 0 0" axis="0 0 1"/>
+          <geom name="ur5e//unnamed_geom_2" class="ur5e/visual" material="ur5e/urblue" mesh="ur5e/shoulder_0"/>
+          <geom name="ur5e//unnamed_geom_3" class="ur5e/visual" material="ur5e/black" mesh="ur5e/shoulder_1"/>
+          <geom name="ur5e//unnamed_geom_4" class="ur5e/visual" material="ur5e/jointgray" mesh="ur5e/shoulder_2"/>
+          <geom name="ur5e//unnamed_geom_5" class="ur5e/collision" size="0.06 0.06" pos="0 0 -0.04"/>
+          <body name="ur5e/upper_arm_link" pos="0 0.138 0" quat="0.707107 0 0.707107 0">
+            <inertial pos="0 0 0.2125" mass="8.393" diaginertia="0.133886 0.133886 0.0151074"/>
+            <joint name="ur5e/shoulder_lift_joint" class="ur5e/size3" pos="0 0 0" axis="0 1 0"/>
+            <geom name="ur5e//unnamed_geom_6" class="ur5e/visual" material="ur5e/linkgray" mesh="ur5e/upperarm_0"/>
+            <geom name="ur5e//unnamed_geom_7" class="ur5e/visual" material="ur5e/black" mesh="ur5e/upperarm_1"/>
+            <geom name="ur5e//unnamed_geom_8" class="ur5e/visual" material="ur5e/jointgray" mesh="ur5e/upperarm_2"/>
+            <geom name="ur5e//unnamed_geom_9" class="ur5e/visual" material="ur5e/urblue" mesh="ur5e/upperarm_3"/>
+            <geom name="ur5e//unnamed_geom_10" class="ur5e/collision" size="0.06 0.06" pos="0 -0.04 0" quat="0.707107 0.707107 0 0"/>
+            <geom name="ur5e//unnamed_geom_11" class="ur5e/collision" size="0.05 0.2" pos="0 0 0.2"/>
+            <body name="ur5e/forearm_link" pos="0 -0.131 0.425">
+              <inertial pos="0 0 0.196" mass="2.275" diaginertia="0.0311796 0.0311796 0.004095"/>
+              <joint name="ur5e/elbow_joint" class="ur5e/size3_limited" pos="0 0 0" axis="0 1 0"/>
+              <geom name="ur5e//unnamed_geom_12" class="ur5e/visual" material="ur5e/urblue" mesh="ur5e/forearm_0"/>
+              <geom name="ur5e//unnamed_geom_13" class="ur5e/visual" material="ur5e/linkgray" mesh="ur5e/forearm_1"/>
+              <geom name="ur5e//unnamed_geom_14" class="ur5e/visual" material="ur5e/black" mesh="ur5e/forearm_2"/>
+              <geom name="ur5e//unnamed_geom_15" class="ur5e/visual" material="ur5e/jointgray" mesh="ur5e/forearm_3"/>
+              <geom name="ur5e//unnamed_geom_16" class="ur5e/collision" size="0.055 0.06" pos="0 0.08 0" quat="0.707107 0.707107 0 0"/>
+              <geom name="ur5e//unnamed_geom_17" class="ur5e/collision" size="0.038 0.19" pos="0 0 0.2"/>
+              <body name="ur5e/wrist_1_link" pos="0 0 0.392" quat="0.707107 0 0.707107 0">
+                <inertial pos="0 0.127 0" mass="1.219" diaginertia="0.0025599 0.0025599 0.0021942"/>
+                <joint name="ur5e/wrist_1_joint" class="ur5e/size1" pos="0 0 0" axis="0 1 0"/>
+                <geom name="ur5e//unnamed_geom_18" class="ur5e/visual" material="ur5e/black" mesh="ur5e/wrist1_0"/>
+                <geom name="ur5e//unnamed_geom_19" class="ur5e/visual" material="ur5e/urblue" mesh="ur5e/wrist1_1"/>
+                <geom name="ur5e//unnamed_geom_20" class="ur5e/visual" material="ur5e/jointgray" mesh="ur5e/wrist1_2"/>
+                <geom name="ur5e//unnamed_geom_21" class="ur5e/collision" size="0.04 0.07" pos="0 0.05 0" quat="0.707107 0.707107 0 0"/>
+                <body name="ur5e/wrist_2_link" pos="0 0.127 0">
+                  <inertial pos="0 0 0.1" mass="1.219" diaginertia="0.0025599 0.0025599 0.0021942"/>
+                  <joint name="ur5e/wrist_2_joint" class="ur5e/size1" pos="0 0 0" axis="0 0 1"/>
+                  <geom name="ur5e//unnamed_geom_22" class="ur5e/visual" material="ur5e/black" mesh="ur5e/wrist2_0"/>
+                  <geom name="ur5e//unnamed_geom_23" class="ur5e/visual" material="ur5e/urblue" mesh="ur5e/wrist2_1"/>
+                  <geom name="ur5e//unnamed_geom_24" class="ur5e/visual" material="ur5e/jointgray" mesh="ur5e/wrist2_2"/>
+                  <geom name="ur5e//unnamed_geom_25" class="ur5e/collision" size="0.04 0.06" pos="0 0 0.04"/>
+                  <geom name="ur5e//unnamed_geom_26" class="ur5e/collision" size="0.04 0.04" pos="0 0.02 0.1" quat="0.707107 0.707107 0 0"/>
+                  <body name="ur5e/wrist_3_link" pos="0 0 0.1">
+                    <inertial pos="0 0.0771683 0" quat="0.707107 0 0 0.707107" mass="0.1889" diaginertia="0.000132134 9.90863e-05 9.90863e-05"/>
+                    <joint name="ur5e/wrist_3_joint" class="ur5e/size1" pos="0 0 0" axis="0 1 0"/>
+                    <geom name="ur5e//unnamed_geom_27" class="ur5e/visual" material="ur5e/linkgray" mesh="ur5e/wrist3"/>
+                    <geom name="ur5e//unnamed_geom_28" class="ur5e/eef_collision" size="0.04 0.02" pos="0 0.08 0" quat="0.707107 0.707107 0 0"/>
+                    <body name="ur5e/tool0_link" pos="0 0.1 0" quat="-0.707107 0.707107 0 0">
+                      <site name="ur5e/attachment_site" pos="0 0 0"/>
+                      <site name="ur5e/eef_site" pos="0 0 0.05" quat="0 0.707107 -0.707107 0"/>
+                      <body name="ur5e/dh_ag95_gripper/" quat="0 0 0 1">
+                        <body name="ur5e/dh_ag95_gripper/base">
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_0" class="ur5e/dh_ag95_gripper/collision" mesh="ur5e/dh_ag95_gripper/base_link"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_1" class="ur5e/dh_ag95_gripper/visual" material="ur5e/dh_ag95_gripper/grey" mesh="ur5e/dh_ag95_gripper/base_link"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_2" class="ur5e/dh_ag95_gripper/collision" mesh="ur5e/dh_ag95_gripper/gripper_body"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_3" class="ur5e/dh_ag95_gripper/visual" material="ur5e/dh_ag95_gripper/black" mesh="ur5e/dh_ag95_gripper/gripper_body"/>
+                        </body>
+                        <body name="ur5e/dh_ag95_gripper/left_inner_knuckle" pos="0.016 -0.0254 0.10586" quat="0.922844 0 0.385173 0">
+                          <joint name="ur5e/dh_ag95_gripper/left_inner_knuckle_joint" class="ur5e/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_4" class="ur5e/dh_ag95_gripper/collision" pos="-0.016 0.0254 -0.10586" mesh="ur5e/dh_ag95_gripper/inner_knuckle"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_5" class="ur5e/dh_ag95_gripper/visual" pos="-0.016 0.0254 -0.10586" material="ur5e/dh_ag95_gripper/black" mesh="ur5e/dh_ag95_gripper/inner_knuckle"/>
+                        </body>
+                        <body name="ur5e/dh_ag95_gripper/left_outer_knuckle" pos="0.036673 -0.00875 0.098336" quat="0.924908 0 -0.380191 0">
+                          <joint name="ur5e/dh_ag95_gripper/left_outer_knuckle_joint" class="ur5e/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_6" class="ur5e/dh_ag95_gripper/collision" pos="-0.036673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/outer_knuckle"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_7" class="ur5e/dh_ag95_gripper/visual" pos="-0.036673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/black" mesh="ur5e/dh_ag95_gripper/outer_knuckle"/>
+                          <body name="ur5e/dh_ag95_gripper/left_finger" pos="0.055 0 0" quat="0.924908 0 0.380191 0">
+                            <joint name="ur5e/dh_ag95_gripper/left_finger_joint" class="ur5e/dh_ag95_gripper/" pos="0 0 0" axis="0 1 0"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_8" class="ur5e/dh_ag95_gripper/collision" pos="-0.091673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_9" class="ur5e/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/black" mesh="ur5e/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_10" class="ur5e/dh_ag95_gripper/pad_box_0" pos="-0.091673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_11" class="ur5e/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/grey" mesh="ur5e/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_12" class="ur5e/dh_ag95_gripper/pad_box_1" pos="-0.091673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/finger_pad_1"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_13" class="ur5e/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/grey" mesh="ur5e/dh_ag95_gripper/finger_pad_1"/>
+                          </body>
+                        </body>
+                        <body name="ur5e/dh_ag95_gripper/right_inner_knuckle" pos="-0.016 0.0254 0.10586" quat="0 0.385173 0 -0.922844">
+                          <joint name="ur5e/dh_ag95_gripper/right_inner_knuckle_joint" class="ur5e/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_14" class="ur5e/dh_ag95_gripper/collision" pos="-0.016 0.0254 -0.10586" mesh="ur5e/dh_ag95_gripper/inner_knuckle"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_15" class="ur5e/dh_ag95_gripper/visual" pos="-0.016 0.0254 -0.10586" material="ur5e/dh_ag95_gripper/black" mesh="ur5e/dh_ag95_gripper/inner_knuckle"/>
+                        </body>
+                        <body name="ur5e/dh_ag95_gripper/right_outer_knuckle" pos="-0.036673 0.00875 0.098336" quat="0 0.380191 0 0.924908">
+                          <joint name="ur5e/dh_ag95_gripper/right_outer_knuckle_joint" class="ur5e/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_16" class="ur5e/dh_ag95_gripper/collision" pos="-0.036673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/outer_knuckle"/>
+                          <geom name="ur5e/dh_ag95_gripper//unnamed_geom_17" class="ur5e/dh_ag95_gripper/visual" pos="-0.036673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/black" mesh="ur5e/dh_ag95_gripper/outer_knuckle"/>
+                          <body name="ur5e/dh_ag95_gripper/right_finger" pos="0.055 0 0" quat="0.924908 0 0.380191 0">
+                            <joint name="ur5e/dh_ag95_gripper/right_finger_joint" class="ur5e/dh_ag95_gripper/" pos="0 0 0" axis="0 1 0"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_18" class="ur5e/dh_ag95_gripper/collision" pos="-0.091673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_19" class="ur5e/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/black" mesh="ur5e/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_20" class="ur5e/dh_ag95_gripper/pad_box_0" pos="-0.091673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_21" class="ur5e/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/grey" mesh="ur5e/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_22" class="ur5e/dh_ag95_gripper/pad_box_1" pos="-0.091673 0.00875 -0.098336" mesh="ur5e/dh_ag95_gripper/finger_pad_1"/>
+                            <geom name="ur5e/dh_ag95_gripper//unnamed_geom_23" class="ur5e/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e/dh_ag95_gripper/grey" mesh="ur5e/dh_ag95_gripper/finger_pad_1"/>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="ur5e_1/" pos="0 0.5 0" quat="0.707107 0 0 -0.707107">
+      <light name="ur5e_1/spotlight" class="ur5e_1/" target="ur5e_1/wrist_2_link" pos="0 -1 2" dir="0 0 -1" mode="targetbodycom"/>
+      <body name="ur5e_1/base" childclass="ur5e_1/ur5e" quat="0.707107 0 0 0.707107">
+        <inertial pos="0 0 0" mass="4" diaginertia="0.00443333 0.00443333 0.0072"/>
+        <geom name="ur5e_1//unnamed_geom_0" class="ur5e_1/visual" material="ur5e_1/black" mesh="ur5e_1/base_0"/>
+        <geom name="ur5e_1//unnamed_geom_1" class="ur5e_1/visual" material="ur5e_1/jointgray" mesh="ur5e_1/base_1"/>
+        <body name="ur5e_1/shoulder_link" pos="0 0 0.163">
+          <inertial pos="0 0 0" mass="3.7" diaginertia="0.0102675 0.0102675 0.00666"/>
+          <joint name="ur5e_1/shoulder_pan_joint" class="ur5e_1/size3" pos="0 0 0" axis="0 0 1"/>
+          <geom name="ur5e_1//unnamed_geom_2" class="ur5e_1/visual" material="ur5e_1/urblue" mesh="ur5e_1/shoulder_0"/>
+          <geom name="ur5e_1//unnamed_geom_3" class="ur5e_1/visual" material="ur5e_1/black" mesh="ur5e_1/shoulder_1"/>
+          <geom name="ur5e_1//unnamed_geom_4" class="ur5e_1/visual" material="ur5e_1/jointgray" mesh="ur5e_1/shoulder_2"/>
+          <geom name="ur5e_1//unnamed_geom_5" class="ur5e_1/collision" size="0.06 0.06" pos="0 0 -0.04"/>
+          <body name="ur5e_1/upper_arm_link" pos="0 0.138 0" quat="0.707107 0 0.707107 0">
+            <inertial pos="0 0 0.2125" mass="8.393" diaginertia="0.133886 0.133886 0.0151074"/>
+            <joint name="ur5e_1/shoulder_lift_joint" class="ur5e_1/size3" pos="0 0 0" axis="0 1 0"/>
+            <geom name="ur5e_1//unnamed_geom_6" class="ur5e_1/visual" material="ur5e_1/linkgray" mesh="ur5e_1/upperarm_0"/>
+            <geom name="ur5e_1//unnamed_geom_7" class="ur5e_1/visual" material="ur5e_1/black" mesh="ur5e_1/upperarm_1"/>
+            <geom name="ur5e_1//unnamed_geom_8" class="ur5e_1/visual" material="ur5e_1/jointgray" mesh="ur5e_1/upperarm_2"/>
+            <geom name="ur5e_1//unnamed_geom_9" class="ur5e_1/visual" material="ur5e_1/urblue" mesh="ur5e_1/upperarm_3"/>
+            <geom name="ur5e_1//unnamed_geom_10" class="ur5e_1/collision" size="0.06 0.06" pos="0 -0.04 0" quat="0.707107 0.707107 0 0"/>
+            <geom name="ur5e_1//unnamed_geom_11" class="ur5e_1/collision" size="0.05 0.2" pos="0 0 0.2"/>
+            <body name="ur5e_1/forearm_link" pos="0 -0.131 0.425">
+              <inertial pos="0 0 0.196" mass="2.275" diaginertia="0.0311796 0.0311796 0.004095"/>
+              <joint name="ur5e_1/elbow_joint" class="ur5e_1/size3_limited" pos="0 0 0" axis="0 1 0"/>
+              <geom name="ur5e_1//unnamed_geom_12" class="ur5e_1/visual" material="ur5e_1/urblue" mesh="ur5e_1/forearm_0"/>
+              <geom name="ur5e_1//unnamed_geom_13" class="ur5e_1/visual" material="ur5e_1/linkgray" mesh="ur5e_1/forearm_1"/>
+              <geom name="ur5e_1//unnamed_geom_14" class="ur5e_1/visual" material="ur5e_1/black" mesh="ur5e_1/forearm_2"/>
+              <geom name="ur5e_1//unnamed_geom_15" class="ur5e_1/visual" material="ur5e_1/jointgray" mesh="ur5e_1/forearm_3"/>
+              <geom name="ur5e_1//unnamed_geom_16" class="ur5e_1/collision" size="0.055 0.06" pos="0 0.08 0" quat="0.707107 0.707107 0 0"/>
+              <geom name="ur5e_1//unnamed_geom_17" class="ur5e_1/collision" size="0.038 0.19" pos="0 0 0.2"/>
+              <body name="ur5e_1/wrist_1_link" pos="0 0 0.392" quat="0.707107 0 0.707107 0">
+                <inertial pos="0 0.127 0" mass="1.219" diaginertia="0.0025599 0.0025599 0.0021942"/>
+                <joint name="ur5e_1/wrist_1_joint" class="ur5e_1/size1" pos="0 0 0" axis="0 1 0"/>
+                <geom name="ur5e_1//unnamed_geom_18" class="ur5e_1/visual" material="ur5e_1/black" mesh="ur5e_1/wrist1_0"/>
+                <geom name="ur5e_1//unnamed_geom_19" class="ur5e_1/visual" material="ur5e_1/urblue" mesh="ur5e_1/wrist1_1"/>
+                <geom name="ur5e_1//unnamed_geom_20" class="ur5e_1/visual" material="ur5e_1/jointgray" mesh="ur5e_1/wrist1_2"/>
+                <geom name="ur5e_1//unnamed_geom_21" class="ur5e_1/collision" size="0.04 0.07" pos="0 0.05 0" quat="0.707107 0.707107 0 0"/>
+                <body name="ur5e_1/wrist_2_link" pos="0 0.127 0">
+                  <inertial pos="0 0 0.1" mass="1.219" diaginertia="0.0025599 0.0025599 0.0021942"/>
+                  <joint name="ur5e_1/wrist_2_joint" class="ur5e_1/size1" pos="0 0 0" axis="0 0 1"/>
+                  <geom name="ur5e_1//unnamed_geom_22" class="ur5e_1/visual" material="ur5e_1/black" mesh="ur5e_1/wrist2_0"/>
+                  <geom name="ur5e_1//unnamed_geom_23" class="ur5e_1/visual" material="ur5e_1/urblue" mesh="ur5e_1/wrist2_1"/>
+                  <geom name="ur5e_1//unnamed_geom_24" class="ur5e_1/visual" material="ur5e_1/jointgray" mesh="ur5e_1/wrist2_2"/>
+                  <geom name="ur5e_1//unnamed_geom_25" class="ur5e_1/collision" size="0.04 0.06" pos="0 0 0.04"/>
+                  <geom name="ur5e_1//unnamed_geom_26" class="ur5e_1/collision" size="0.04 0.04" pos="0 0.02 0.1" quat="0.707107 0.707107 0 0"/>
+                  <body name="ur5e_1/wrist_3_link" pos="0 0 0.1">
+                    <inertial pos="0 0.0771683 0" quat="0.707107 0 0 0.707107" mass="0.1889" diaginertia="0.000132134 9.90863e-05 9.90863e-05"/>
+                    <joint name="ur5e_1/wrist_3_joint" class="ur5e_1/size1" pos="0 0 0" axis="0 1 0"/>
+                    <geom name="ur5e_1//unnamed_geom_27" class="ur5e_1/visual" material="ur5e_1/linkgray" mesh="ur5e_1/wrist3"/>
+                    <geom name="ur5e_1//unnamed_geom_28" class="ur5e_1/eef_collision" size="0.04 0.02" pos="0 0.08 0" quat="0.707107 0.707107 0 0"/>
+                    <body name="ur5e_1/tool0_link" pos="0 0.1 0" quat="-0.707107 0.707107 0 0">
+                      <site name="ur5e_1/attachment_site" pos="0 0 0"/>
+                      <site name="ur5e_1/eef_site" pos="0 0 0.05" quat="0 0.707107 -0.707107 0"/>
+                      <body name="ur5e_1/dh_ag95_gripper/" quat="0 0 0 1">
+                        <body name="ur5e_1/dh_ag95_gripper/base">
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_0" class="ur5e_1/dh_ag95_gripper/collision" mesh="ur5e_1/dh_ag95_gripper/base_link"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_1" class="ur5e_1/dh_ag95_gripper/visual" material="ur5e_1/dh_ag95_gripper/grey" mesh="ur5e_1/dh_ag95_gripper/base_link"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_2" class="ur5e_1/dh_ag95_gripper/collision" mesh="ur5e_1/dh_ag95_gripper/gripper_body"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_3" class="ur5e_1/dh_ag95_gripper/visual" material="ur5e_1/dh_ag95_gripper/black" mesh="ur5e_1/dh_ag95_gripper/gripper_body"/>
+                        </body>
+                        <body name="ur5e_1/dh_ag95_gripper/left_inner_knuckle" pos="0.016 -0.0254 0.10586" quat="0.922844 0 0.385173 0">
+                          <joint name="ur5e_1/dh_ag95_gripper/left_inner_knuckle_joint" class="ur5e_1/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_4" class="ur5e_1/dh_ag95_gripper/collision" pos="-0.016 0.0254 -0.10586" mesh="ur5e_1/dh_ag95_gripper/inner_knuckle"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_5" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.016 0.0254 -0.10586" material="ur5e_1/dh_ag95_gripper/black" mesh="ur5e_1/dh_ag95_gripper/inner_knuckle"/>
+                        </body>
+                        <body name="ur5e_1/dh_ag95_gripper/left_outer_knuckle" pos="0.036673 -0.00875 0.098336" quat="0.924908 0 -0.380191 0">
+                          <joint name="ur5e_1/dh_ag95_gripper/left_outer_knuckle_joint" class="ur5e_1/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_6" class="ur5e_1/dh_ag95_gripper/collision" pos="-0.036673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/outer_knuckle"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_7" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.036673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/black" mesh="ur5e_1/dh_ag95_gripper/outer_knuckle"/>
+                          <body name="ur5e_1/dh_ag95_gripper/left_finger" pos="0.055 0 0" quat="0.924908 0 0.380191 0">
+                            <joint name="ur5e_1/dh_ag95_gripper/left_finger_joint" class="ur5e_1/dh_ag95_gripper/" pos="0 0 0" axis="0 1 0"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_8" class="ur5e_1/dh_ag95_gripper/collision" pos="-0.091673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_9" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/black" mesh="ur5e_1/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_10" class="ur5e_1/dh_ag95_gripper/pad_box_0" pos="-0.091673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_11" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/grey" mesh="ur5e_1/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_12" class="ur5e_1/dh_ag95_gripper/pad_box_1" pos="-0.091673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/finger_pad_1"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_13" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/grey" mesh="ur5e_1/dh_ag95_gripper/finger_pad_1"/>
+                          </body>
+                        </body>
+                        <body name="ur5e_1/dh_ag95_gripper/right_inner_knuckle" pos="-0.016 0.0254 0.10586" quat="0 0.385173 0 -0.922844">
+                          <joint name="ur5e_1/dh_ag95_gripper/right_inner_knuckle_joint" class="ur5e_1/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_14" class="ur5e_1/dh_ag95_gripper/collision" pos="-0.016 0.0254 -0.10586" mesh="ur5e_1/dh_ag95_gripper/inner_knuckle"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_15" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.016 0.0254 -0.10586" material="ur5e_1/dh_ag95_gripper/black" mesh="ur5e_1/dh_ag95_gripper/inner_knuckle"/>
+                        </body>
+                        <body name="ur5e_1/dh_ag95_gripper/right_outer_knuckle" pos="-0.036673 0.00875 0.098336" quat="0 0.380191 0 0.924908">
+                          <joint name="ur5e_1/dh_ag95_gripper/right_outer_knuckle_joint" class="ur5e_1/dh_ag95_gripper/" pos="0 0 0" axis="0 -1 0"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_16" class="ur5e_1/dh_ag95_gripper/collision" pos="-0.036673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/outer_knuckle"/>
+                          <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_17" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.036673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/black" mesh="ur5e_1/dh_ag95_gripper/outer_knuckle"/>
+                          <body name="ur5e_1/dh_ag95_gripper/right_finger" pos="0.055 0 0" quat="0.924908 0 0.380191 0">
+                            <joint name="ur5e_1/dh_ag95_gripper/right_finger_joint" class="ur5e_1/dh_ag95_gripper/" pos="0 0 0" axis="0 1 0"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_18" class="ur5e_1/dh_ag95_gripper/collision" pos="-0.091673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_19" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/black" mesh="ur5e_1/dh_ag95_gripper/finger"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_20" class="ur5e_1/dh_ag95_gripper/pad_box_0" pos="-0.091673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_21" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/grey" mesh="ur5e_1/dh_ag95_gripper/finger_pad_0"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_22" class="ur5e_1/dh_ag95_gripper/pad_box_1" pos="-0.091673 0.00875 -0.098336" mesh="ur5e_1/dh_ag95_gripper/finger_pad_1"/>
+                            <geom name="ur5e_1/dh_ag95_gripper//unnamed_geom_23" class="ur5e_1/dh_ag95_gripper/visual" pos="-0.091673 0.00875 -0.098336" material="ur5e_1/dh_ag95_gripper/grey" mesh="ur5e_1/dh_ag95_gripper/finger_pad_1"/>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="Cable/" pos="0.5 0 0" quat="0.707107 0 0 -0.707107">
+      <joint name="Cable/" type="free" limited="false" actuatorfrclimited="false"/>
+      <body name="Cable/slider1" pos="-0.3 0 0">
+        <geom name="Cable//unnamed_geom_0" class="Cable/" size="0.01 0.01 0.01" type="box"/>
+      </body>
+      <body name="Cable//unnamed_composite_0B_first" pos="-0.3 0 0">
+        <joint name="Cable//unnamed_composite_0J_first" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+        <geom name="Cable//unnamed_composite_0G0" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00976177 1 1"/>
+        <site name="Cable//unnamed_composite_0S_first" pos="0 0 0" group="3"/>
+        <plugin instance="compositeCable//unnamed_composite_0"/>
+        <body name="Cable//unnamed_composite_0B_1" pos="0.0125 0 0">
+          <joint name="Cable//unnamed_composite_0J_1" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+          <geom name="Cable//unnamed_composite_0G1" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00390324 1 1"/>
+          <plugin instance="compositeCable//unnamed_composite_0"/>
+          <body name="Cable//unnamed_composite_0B_2" pos="0.0125 0 0">
+            <joint name="Cable//unnamed_composite_0J_2" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+            <geom name="Cable//unnamed_composite_0G2" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00600517 1 1"/>
+            <plugin instance="compositeCable//unnamed_composite_0"/>
+            <body name="Cable//unnamed_composite_0B_3" pos="0.0125 0 0">
+              <joint name="Cable//unnamed_composite_0J_3" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+              <geom name="Cable//unnamed_composite_0G3" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.0128387 1 1"/>
+              <plugin instance="compositeCable//unnamed_composite_0"/>
+              <body name="Cable//unnamed_composite_0B_4" pos="0.0125 0 0">
+                <joint name="Cable//unnamed_composite_0J_4" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                <geom name="Cable//unnamed_composite_0G4" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.0171449 1 1"/>
+                <plugin instance="compositeCable//unnamed_composite_0"/>
+                <body name="Cable//unnamed_composite_0B_5" pos="0.0125 0 0">
+                  <joint name="Cable//unnamed_composite_0J_5" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                  <geom name="Cable//unnamed_composite_0G5" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.0189435 1 1"/>
+                  <plugin instance="compositeCable//unnamed_composite_0"/>
+                  <body name="Cable//unnamed_composite_0B_6" pos="0.0125 0 0">
+                    <joint name="Cable//unnamed_composite_0J_6" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                    <geom name="Cable//unnamed_composite_0G6" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.0182706 1 1"/>
+                    <plugin instance="compositeCable//unnamed_composite_0"/>
+                    <body name="Cable//unnamed_composite_0B_7" pos="0.0125 0 0">
+                      <joint name="Cable//unnamed_composite_0J_7" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                      <geom name="Cable//unnamed_composite_0G7" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.0152492 1 1"/>
+                      <plugin instance="compositeCable//unnamed_composite_0"/>
+                      <body name="Cable//unnamed_composite_0B_8" pos="0.0125 0 0">
+                        <joint name="Cable//unnamed_composite_0J_8" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                        <geom name="Cable//unnamed_composite_0G8" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.0104319 1 1"/>
+                        <plugin instance="compositeCable//unnamed_composite_0"/>
+                        <body name="Cable//unnamed_composite_0B_9" pos="0.0125 0 0">
+                          <joint name="Cable//unnamed_composite_0J_9" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                          <geom name="Cable//unnamed_composite_0G9" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00505034 1 1"/>
+                          <plugin instance="compositeCable//unnamed_composite_0"/>
+                          <body name="Cable//unnamed_composite_0B_10" pos="0.0125 0 0">
+                            <joint name="Cable//unnamed_composite_0J_10" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                            <geom name="Cable//unnamed_composite_0G10" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000671743 1 1"/>
+                            <plugin instance="compositeCable//unnamed_composite_0"/>
+                            <body name="Cable//unnamed_composite_0B_11" pos="0.0125 0 0">
+                              <joint name="Cable//unnamed_composite_0J_11" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                              <geom name="Cable//unnamed_composite_0G11" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00175057 1 1"/>
+                              <plugin instance="compositeCable//unnamed_composite_0"/>
+                              <body name="Cable//unnamed_composite_0B_12" pos="0.0125 0 0">
+                                <joint name="Cable//unnamed_composite_0J_12" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                <geom name="Cable//unnamed_composite_0G12" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00228714 1 1"/>
+                                <plugin instance="compositeCable//unnamed_composite_0"/>
+                                <body name="Cable//unnamed_composite_0B_13" pos="0.0125 0 0">
+                                  <joint name="Cable//unnamed_composite_0J_13" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                  <geom name="Cable//unnamed_composite_0G13" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00163412 1 1"/>
+                                  <plugin instance="compositeCable//unnamed_composite_0"/>
+                                  <body name="Cable//unnamed_composite_0B_14" pos="0.0125 0 0">
+                                    <joint name="Cable//unnamed_composite_0J_14" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                    <geom name="Cable//unnamed_composite_0G14" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000633532 1 1"/>
+                                    <plugin instance="compositeCable//unnamed_composite_0"/>
+                                    <body name="Cable//unnamed_composite_0B_15" pos="0.0125 0 0">
+                                      <joint name="Cable//unnamed_composite_0J_15" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                      <geom name="Cable//unnamed_composite_0G15" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000169296 1 1"/>
+                                      <plugin instance="compositeCable//unnamed_composite_0"/>
+                                      <body name="Cable//unnamed_composite_0B_16" pos="0.0125 0 0">
+                                        <joint name="Cable//unnamed_composite_0J_16" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                        <geom name="Cable//unnamed_composite_0G16" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000641625 1 1"/>
+                                        <plugin instance="compositeCable//unnamed_composite_0"/>
+                                        <body name="Cable//unnamed_composite_0B_17" pos="0.0125 0 0">
+                                          <joint name="Cable//unnamed_composite_0J_17" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                          <geom name="Cable//unnamed_composite_0G17" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000804881 1 1"/>
+                                          <plugin instance="compositeCable//unnamed_composite_0"/>
+                                          <body name="Cable//unnamed_composite_0B_18" pos="0.0125 0 0">
+                                            <joint name="Cable//unnamed_composite_0J_18" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                            <geom name="Cable//unnamed_composite_0G18" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000698701 1 1"/>
+                                            <plugin instance="compositeCable//unnamed_composite_0"/>
+                                            <body name="Cable//unnamed_composite_0B_19" pos="0.0125 0 0">
+                                              <joint name="Cable//unnamed_composite_0J_19" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                              <geom name="Cable//unnamed_composite_0G19" size="0.005 0.00625" pos="0.00625 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00043681 1 1"/>
+                                              <plugin instance="compositeCable//unnamed_composite_0"/>
+                                              <body name="Cable//unnamed_composite_0B_20" pos="0.0125 0 0">
+                                                <joint name="Cable//unnamed_composite_0J_20" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                <geom name="Cable//unnamed_composite_0G20" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000143119 1 1"/>
+                                                <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                <body name="Cable//unnamed_composite_0B_21" pos="0.0125 0 0">
+                                                  <joint name="Cable//unnamed_composite_0J_21" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                  <geom name="Cable//unnamed_composite_0G21" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 8.76779e-05 1 1"/>
+                                                  <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                  <body name="Cable//unnamed_composite_0B_22" pos="0.0125 0 0">
+                                                    <joint name="Cable//unnamed_composite_0J_22" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                    <geom name="Cable//unnamed_composite_0G22" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000209316 1 1"/>
+                                                    <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                    <body name="Cable//unnamed_composite_0B_23" pos="0.0125 0 0">
+                                                      <joint name="Cable//unnamed_composite_0J_23" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                      <geom name="Cable//unnamed_composite_0G23" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000226667 1 1"/>
+                                                      <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                      <body name="Cable//unnamed_composite_0B_24" pos="0.0125 0 0">
+                                                        <joint name="Cable//unnamed_composite_0J_24" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                        <geom name="Cable//unnamed_composite_0G24" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000185588 1 1"/>
+                                                        <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                        <body name="Cable//unnamed_composite_0B_25" pos="0.0125 0 0">
+                                                          <joint name="Cable//unnamed_composite_0J_25" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                          <geom name="Cable//unnamed_composite_0G25" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000152651 1 1"/>
+                                                          <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                          <body name="Cable//unnamed_composite_0B_26" pos="0.0125 0 0">
+                                                            <joint name="Cable//unnamed_composite_0J_26" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                            <geom name="Cable//unnamed_composite_0G26" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000187209 1 1"/>
+                                                            <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                            <body name="Cable//unnamed_composite_0B_27" pos="0.0125 0 0">
+                                                              <joint name="Cable//unnamed_composite_0J_27" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                              <geom name="Cable//unnamed_composite_0G27" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000310128 1 1"/>
+                                                              <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                              <body name="Cable//unnamed_composite_0B_28" pos="0.0125 0 0">
+                                                                <joint name="Cable//unnamed_composite_0J_28" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                <geom name="Cable//unnamed_composite_0G28" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000477417 1 1"/>
+                                                                <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                <body name="Cable//unnamed_composite_0B_29" pos="0.0125 0 0">
+                                                                  <joint name="Cable//unnamed_composite_0J_29" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                  <geom name="Cable//unnamed_composite_0G29" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000573059 1 1"/>
+                                                                  <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                  <body name="Cable//unnamed_composite_0B_30" pos="0.0125 0 0">
+                                                                    <joint name="Cable//unnamed_composite_0J_30" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                    <geom name="Cable//unnamed_composite_0G30" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00044253 1 1"/>
+                                                                    <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                    <body name="Cable//unnamed_composite_0B_31" pos="0.0125 0 0">
+                                                                      <joint name="Cable//unnamed_composite_0J_31" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                      <geom name="Cable//unnamed_composite_0G31" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 1.1077e-05 1 1"/>
+                                                                      <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                      <body name="Cable//unnamed_composite_0B_32" pos="0.0125 0 0">
+                                                                        <joint name="Cable//unnamed_composite_0J_32" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                        <geom name="Cable//unnamed_composite_0G32" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000660025 1 1"/>
+                                                                        <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                        <body name="Cable//unnamed_composite_0B_33" pos="0.0125 0 0">
+                                                                          <joint name="Cable//unnamed_composite_0J_33" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                          <geom name="Cable//unnamed_composite_0G33" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00102538 1 1"/>
+                                                                          <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                          <body name="Cable//unnamed_composite_0B_34" pos="0.0125 0 0">
+                                                                            <joint name="Cable//unnamed_composite_0J_34" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                            <geom name="Cable//unnamed_composite_0G34" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.000763086 1 1"/>
+                                                                            <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                            <body name="Cable//unnamed_composite_0B_35" pos="0.0125 0 0">
+                                                                              <joint name="Cable//unnamed_composite_0J_35" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                              <geom name="Cable//unnamed_composite_0G35" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00015758 1 1"/>
+                                                                              <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                              <body name="Cable//unnamed_composite_0B_36" pos="0.0125 0 0">
+                                                                                <joint name="Cable//unnamed_composite_0J_36" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                                <geom name="Cable//unnamed_composite_0G36" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00194839 1 1"/>
+                                                                                <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                                <body name="Cable//unnamed_composite_0B_37" pos="0.0125 0 0">
+                                                                                  <joint name="Cable//unnamed_composite_0J_37" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                                  <geom name="Cable//unnamed_composite_0G37" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00439959 1 1"/>
+                                                                                  <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                                  <body name="Cable//unnamed_composite_0B_38" pos="0.0125 0 0">
+                                                                                    <joint name="Cable//unnamed_composite_0J_38" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                                    <geom name="Cable//unnamed_composite_0G38" size="0.005 0.00625001" pos="0.00625001 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.00973415 1 1"/>
+                                                                                    <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                                    <body name="Cable//unnamed_composite_0B_last" pos="0.0125 0 0">
+                                                                                      <joint name="Cable//unnamed_composite_0J_last" pos="0 0 0" type="ball" group="3" actuatorfrclimited="false" damping="0.015"/>
+                                                                                      <geom name="Cable//unnamed_composite_0G39" size="0.005 0.00624999" pos="0.00624999 0 0" quat="0.707107 0 -0.707107 0" type="capsule" condim="1" rgba="0 0.0137783 1 1"/>
+                                                                                      <site name="Cable//unnamed_composite_0S_last" pos="0.0125 0 0" group="3"/>
+                                                                                      <plugin instance="compositeCable//unnamed_composite_0"/>
+                                                                                    </body>
+                                                                                  </body>
+                                                                                </body>
+                                                                              </body>
+                                                                            </body>
+                                                                          </body>
+                                                                        </body>
+                                                                      </body>
+                                                                    </body>
+                                                                  </body>
+                                                                </body>
+                                                              </body>
+                                                            </body>
+                                                          </body>
+                                                        </body>
+                                                      </body>
+                                                    </body>
+                                                  </body>
+                                                </body>
+                                              </body>
+                                            </body>
+                                          </body>
+                                        </body>
+                                      </body>
+                                    </body>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="unnamed_model/" pos="0.5 -0.2 0">
+      <joint name="unnamed_model/" type="free" limited="false" actuatorfrclimited="false"/>
+      <geom name="unnamed_model//unnamed_geom_0" class="unnamed_model/" size="0.01 0.01 0.01" type="box"/>
+    </body>
+  </worldbody>
+  <contact>
+    <exclude name="ur5e/dh_ag95_gripper//unnamed_contact_0" body1="ur5e/dh_ag95_gripper/base" body2="ur5e/dh_ag95_gripper/left_inner_knuckle"/>
+    <exclude name="ur5e/dh_ag95_gripper//unnamed_contact_1" body1="ur5e/dh_ag95_gripper/base" body2="ur5e/dh_ag95_gripper/left_outer_knuckle"/>
+    <exclude name="ur5e/dh_ag95_gripper//unnamed_contact_2" body1="ur5e/dh_ag95_gripper/base" body2="ur5e/dh_ag95_gripper/right_inner_knuckle"/>
+    <exclude name="ur5e/dh_ag95_gripper//unnamed_contact_3" body1="ur5e/dh_ag95_gripper/base" body2="ur5e/dh_ag95_gripper/right_outer_knuckle"/>
+    <exclude name="ur5e/dh_ag95_gripper//unnamed_contact_4" body1="ur5e/dh_ag95_gripper/left_inner_knuckle" body2="ur5e/dh_ag95_gripper/left_finger"/>
+    <exclude name="ur5e/dh_ag95_gripper//unnamed_contact_5" body1="ur5e/dh_ag95_gripper/right_inner_knuckle" body2="ur5e/dh_ag95_gripper/right_finger"/>
+    <exclude name="ur5e_1/dh_ag95_gripper//unnamed_contact_0" body1="ur5e_1/dh_ag95_gripper/base" body2="ur5e_1/dh_ag95_gripper/left_inner_knuckle"/>
+    <exclude name="ur5e_1/dh_ag95_gripper//unnamed_contact_1" body1="ur5e_1/dh_ag95_gripper/base" body2="ur5e_1/dh_ag95_gripper/left_outer_knuckle"/>
+    <exclude name="ur5e_1/dh_ag95_gripper//unnamed_contact_2" body1="ur5e_1/dh_ag95_gripper/base" body2="ur5e_1/dh_ag95_gripper/right_inner_knuckle"/>
+    <exclude name="ur5e_1/dh_ag95_gripper//unnamed_contact_3" body1="ur5e_1/dh_ag95_gripper/base" body2="ur5e_1/dh_ag95_gripper/right_outer_knuckle"/>
+    <exclude name="ur5e_1/dh_ag95_gripper//unnamed_contact_4" body1="ur5e_1/dh_ag95_gripper/left_inner_knuckle" body2="ur5e_1/dh_ag95_gripper/left_finger"/>
+    <exclude name="ur5e_1/dh_ag95_gripper//unnamed_contact_5" body1="ur5e_1/dh_ag95_gripper/right_inner_knuckle" body2="ur5e_1/dh_ag95_gripper/right_finger"/>
+    <exclude body1="Cable//unnamed_composite_0B_first" body2="Cable//unnamed_composite_0B_1"/>
+    <exclude body1="Cable//unnamed_composite_0B_1" body2="Cable//unnamed_composite_0B_2"/>
+    <exclude body1="Cable//unnamed_composite_0B_2" body2="Cable//unnamed_composite_0B_3"/>
+    <exclude body1="Cable//unnamed_composite_0B_3" body2="Cable//unnamed_composite_0B_4"/>
+    <exclude body1="Cable//unnamed_composite_0B_4" body2="Cable//unnamed_composite_0B_5"/>
+    <exclude body1="Cable//unnamed_composite_0B_5" body2="Cable//unnamed_composite_0B_6"/>
+    <exclude body1="Cable//unnamed_composite_0B_6" body2="Cable//unnamed_composite_0B_7"/>
+    <exclude body1="Cable//unnamed_composite_0B_7" body2="Cable//unnamed_composite_0B_8"/>
+    <exclude body1="Cable//unnamed_composite_0B_8" body2="Cable//unnamed_composite_0B_9"/>
+    <exclude body1="Cable//unnamed_composite_0B_9" body2="Cable//unnamed_composite_0B_10"/>
+    <exclude body1="Cable//unnamed_composite_0B_10" body2="Cable//unnamed_composite_0B_11"/>
+    <exclude body1="Cable//unnamed_composite_0B_11" body2="Cable//unnamed_composite_0B_12"/>
+    <exclude body1="Cable//unnamed_composite_0B_12" body2="Cable//unnamed_composite_0B_13"/>
+    <exclude body1="Cable//unnamed_composite_0B_13" body2="Cable//unnamed_composite_0B_14"/>
+    <exclude body1="Cable//unnamed_composite_0B_14" body2="Cable//unnamed_composite_0B_15"/>
+    <exclude body1="Cable//unnamed_composite_0B_15" body2="Cable//unnamed_composite_0B_16"/>
+    <exclude body1="Cable//unnamed_composite_0B_16" body2="Cable//unnamed_composite_0B_17"/>
+    <exclude body1="Cable//unnamed_composite_0B_17" body2="Cable//unnamed_composite_0B_18"/>
+    <exclude body1="Cable//unnamed_composite_0B_18" body2="Cable//unnamed_composite_0B_19"/>
+    <exclude body1="Cable//unnamed_composite_0B_19" body2="Cable//unnamed_composite_0B_20"/>
+    <exclude body1="Cable//unnamed_composite_0B_20" body2="Cable//unnamed_composite_0B_21"/>
+    <exclude body1="Cable//unnamed_composite_0B_21" body2="Cable//unnamed_composite_0B_22"/>
+    <exclude body1="Cable//unnamed_composite_0B_22" body2="Cable//unnamed_composite_0B_23"/>
+    <exclude body1="Cable//unnamed_composite_0B_23" body2="Cable//unnamed_composite_0B_24"/>
+    <exclude body1="Cable//unnamed_composite_0B_24" body2="Cable//unnamed_composite_0B_25"/>
+    <exclude body1="Cable//unnamed_composite_0B_25" body2="Cable//unnamed_composite_0B_26"/>
+    <exclude body1="Cable//unnamed_composite_0B_26" body2="Cable//unnamed_composite_0B_27"/>
+    <exclude body1="Cable//unnamed_composite_0B_27" body2="Cable//unnamed_composite_0B_28"/>
+    <exclude body1="Cable//unnamed_composite_0B_28" body2="Cable//unnamed_composite_0B_29"/>
+    <exclude body1="Cable//unnamed_composite_0B_29" body2="Cable//unnamed_composite_0B_30"/>
+    <exclude body1="Cable//unnamed_composite_0B_30" body2="Cable//unnamed_composite_0B_31"/>
+    <exclude body1="Cable//unnamed_composite_0B_31" body2="Cable//unnamed_composite_0B_32"/>
+    <exclude body1="Cable//unnamed_composite_0B_32" body2="Cable//unnamed_composite_0B_33"/>
+    <exclude body1="Cable//unnamed_composite_0B_33" body2="Cable//unnamed_composite_0B_34"/>
+    <exclude body1="Cable//unnamed_composite_0B_34" body2="Cable//unnamed_composite_0B_35"/>
+    <exclude body1="Cable//unnamed_composite_0B_35" body2="Cable//unnamed_composite_0B_36"/>
+    <exclude body1="Cable//unnamed_composite_0B_36" body2="Cable//unnamed_composite_0B_37"/>
+    <exclude body1="Cable//unnamed_composite_0B_37" body2="Cable//unnamed_composite_0B_38"/>
+    <exclude body1="Cable//unnamed_composite_0B_38" body2="Cable//unnamed_composite_0B_last"/>
+  </contact>
+  <equality>
+    <connect name="ur5e/dh_ag95_gripper//unnamed_equality_0" class="ur5e/dh_ag95_gripper/" body1="ur5e/dh_ag95_gripper/left_finger" body2="ur5e/dh_ag95_gripper/left_inner_knuckle" anchor="-0.020673 0 0.007524" solref="0.005" solimp="0.95 0.99"/>
+    <connect name="ur5e/dh_ag95_gripper//unnamed_equality_1" class="ur5e/dh_ag95_gripper/" body1="ur5e/dh_ag95_gripper/right_finger" body2="ur5e/dh_ag95_gripper/right_inner_knuckle" anchor="-0.020673 0 0.007524" solref="0.005" solimp="0.95 0.99"/>
+    <joint name="ur5e/dh_ag95_gripper//unnamed_equality_2" class="ur5e/dh_ag95_gripper/" joint1="ur5e/dh_ag95_gripper/left_outer_knuckle_joint" joint2="ur5e/dh_ag95_gripper/right_outer_knuckle_joint" polycoef="0 1 0 0 0" solref="0.005" solimp="0.95 0.99"/>
+    <connect name="ur5e_1/dh_ag95_gripper//unnamed_equality_0" class="ur5e_1/dh_ag95_gripper/" body1="ur5e_1/dh_ag95_gripper/left_finger" body2="ur5e_1/dh_ag95_gripper/left_inner_knuckle" anchor="-0.020673 0 0.007524" solref="0.005" solimp="0.95 0.99"/>
+    <connect name="ur5e_1/dh_ag95_gripper//unnamed_equality_1" class="ur5e_1/dh_ag95_gripper/" body1="ur5e_1/dh_ag95_gripper/right_finger" body2="ur5e_1/dh_ag95_gripper/right_inner_knuckle" anchor="-0.020673 0 0.007524" solref="0.005" solimp="0.95 0.99"/>
+    <joint name="ur5e_1/dh_ag95_gripper//unnamed_equality_2" class="ur5e_1/dh_ag95_gripper/" joint1="ur5e_1/dh_ag95_gripper/left_outer_knuckle_joint" joint2="ur5e_1/dh_ag95_gripper/right_outer_knuckle_joint" polycoef="0 1 0 0 0" solref="0.005" solimp="0.95 0.99"/>
+  </equality>
+  <tendon>
+    <fixed name="ur5e/dh_ag95_gripper/split" class="ur5e/dh_ag95_gripper/">
+      <joint joint="ur5e/dh_ag95_gripper/left_outer_knuckle_joint" coef="0.5"/>
+      <joint joint="ur5e/dh_ag95_gripper/right_outer_knuckle_joint" coef="0.5"/>
+    </fixed>
+    <fixed name="ur5e_1/dh_ag95_gripper/split" class="ur5e_1/dh_ag95_gripper/">
+      <joint joint="ur5e_1/dh_ag95_gripper/left_outer_knuckle_joint" coef="0.5"/>
+      <joint joint="ur5e_1/dh_ag95_gripper/right_outer_knuckle_joint" coef="0.5"/>
+    </fixed>
+  </tendon>
+  <actuator>
+    <general name="ur5e/dh_ag95_gripper/fingers_actuator" class="ur5e/dh_ag95_gripper/" tendon="ur5e/dh_ag95_gripper/split"/>
+    <general name="ur5e_1/dh_ag95_gripper/fingers_actuator" class="ur5e_1/dh_ag95_gripper/" tendon="ur5e_1/dh_ag95_gripper/split"/>
+  </actuator>
+</mujoco>
