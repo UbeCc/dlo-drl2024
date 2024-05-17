@@ -21,14 +21,15 @@ class UR5eEnv(gym.Env):
 
     def __init__(self, render_mode=None):
         self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(42,2), dtype=np.float64)
-        low = np.array([-0.02, -0.02, -0.1, -0.02, -0.02, -0.1], dtype=np.float32)
-        high = np.array([0.02, 0.02, 0.1, 0.02, 0.02, 0.1], dtype=np.float32)
-        self.action_space = spaces.Box(low=low, high=high, dtype=np.float32)
+        self.action_space = spaces.Box(low=-1, high=1, shape=(6,), dtype=np.float64)
+        self.low = np.array([-0.02, -0.02, -0.1, -0.02, -0.02, -0.1], dtype=np.float32)
+        self.high = np.array([0.02, 0.02, 0.1, 0.02, 0.02, 0.1], dtype=np.float32)
         self.target_num = 42
         self.target_pos = np.ndarray
         self.target_seed_data = json.load(open('cable_target_seed.json', 'r'))
         self.steps = 0
         self.control_steps = 0
+        self.control_frequency = 15
         assert render_mode is None or render_mode in self.metadata["render_modes"]
         self._render_mode = render_mode
 
@@ -93,7 +94,7 @@ class UR5eEnv(gym.Env):
             eef_site=self._arm.eef_site,
             min_effort=-150.0,
             max_effort=150.0,
-            kp=400,
+            kp=800,
             ko=200,
             kv=50,
             vmax_xyz=1.0,
@@ -105,7 +106,7 @@ class UR5eEnv(gym.Env):
             eef_site=self._arm2.eef_site,
             min_effort=-150.0,
             max_effort=150.0,
-            kp=400,
+            kp=800,
             ko=200,
             kv=50,
             vmax_xyz=1.0,
@@ -129,9 +130,21 @@ class UR5eEnv(gym.Env):
         # TODO come up with an info dict that makes sense for your RL task
         return {}
 
+    def cosine_similarity(self,v1, v2):
+        dot_product = np.dot(v1, v2)
+        norm_v1 = np.linalg.norm(v1)
+        norm_v2 = np.linalg.norm(v2)
+        return dot_product / (norm_v1 * norm_v2)
+
+    def scale_action(self, action: np.ndarray) -> np.ndarray:
+        """
+        Scale the action from [-1, 1] to the desired range [low, high].
+        """
+        return self.low + (action + 1) * (self.high - self.low) / 2
+
     def reset(self, seed=None, options=None) -> tuple:
         super().reset(seed=seed)
-        self.target_pos = self.generate_target_pos(seed=seed)
+        self.target_pos = self.generate_target_pos(seed=1)
         # reset physics
         with self._physics.reset_context():
             # 能够保证开始时即抓取成功的机械臂的初始关节角度
@@ -159,7 +172,7 @@ class UR5eEnv(gym.Env):
             for i in range(self.target_num):
                 self._targets[str(i)].set_mocap_pose(self._physics, position=[self.target_pos[i][1], self.target_pos[i][0], 0], quaternion=[0, 0, 0, 1])
 
-            for i in range(10):
+            for i in range(20):
                 self.step([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
         self.steps = 0
@@ -169,9 +182,13 @@ class UR5eEnv(gym.Env):
         return observation, info
 
     def step(self, action: np.ndarray) -> tuple:
+        time_control_start = time.time()
+        action = np.array(action, dtype=np.float64)
+        action_scaled = self.scale_action(action)
+        truncated = False
         self.steps += 1
-        action1 = action[0:3]
-        action2 = action[3:6]
+        action1 = action_scaled[0:3]
+        action2 = action_scaled[3:6]
         # 根据action计算目标位置
         current_pose1 = self._arm.get_eef_pose(self._physics)
         current_pose2 = self._arm2.get_eef_pose(self._physics)
@@ -190,8 +207,16 @@ class UR5eEnv(gym.Env):
         target_pose2[5] = current_pose2[5] * np.cos(action2[2]) - current_pose2[6] * np.sin(action2[2])
         target_pose2[6] = current_pose2[5] * np.sin(action2[2]) + current_pose2[6] * np.cos(action2[2])
         self.control_steps = 0
+        # 如果目标位置不合理，则直接失败，退出
+        distance = np.linalg.norm(target_pose1[[0, 1]] - target_pose2[[0, 1]])
+        # if distance < 0.05:
+        #     print('distance too near.')
+        #     truncated = True
+        if distance > 0.53:
+            print('distance too far.')
+            truncated = True
         # 执行闭环控制，直到到达目标位置
-        while True:
+        while (time.time() - time_control_start < 1 / self.control_frequency):
             self.control_steps += 1
             self._controller.run(target_pose1)
             self._controller2.run(target_pose2)
@@ -203,11 +228,17 @@ class UR5eEnv(gym.Env):
             error2 = np.linalg.norm(target_pose2[[0, 1]] - current_pose2[[0, 1]])
             if self._render_mode == "human":
                 self._render_frame()
+            else:
+                # time.sleep(self._timestep)
+                pass
             if error1 < 0.005 and error2 < 0.005:
+                print('step finished.')
                 break
-            if self.control_steps > 250:
+            if self.control_steps > 50:
+                print("time_cost:", time.time() - time_control_start)
+                print('control limit time.')
                 break
-            
+
         keypoint = self._cable.get_keypoint_pos(self._physics)
         # print('keypoint:', keypoint[0])
         end = self._cable.get_end_pos(self._physics)
@@ -218,18 +249,54 @@ class UR5eEnv(gym.Env):
         # render frame
         if self._render_mode == "human":
             self._render_frame()
-        # else:
-        #     time.sleep(0.1)
+        else:
+            pass
+            # time.sleep(self._timestep)
 
         # TODO come up with a reward, termination function that makes sense for your RL task
         observation = self._get_obs()
         observation = observation[:, ::-1]
+        # ********************shape constraint********************
+        current_differences = np.diff(observation, axis=0)
+        target_differences = np.diff(self.target_pos, axis=0)
+        similarities = [self.cosine_similarity(current_differences[i], target_differences[i]) for i in
+                        range(len(current_differences))][0:39]
+        # 计算指数衰减权重
+        alpha = 0.1  # 指数衰减率
+        weights = np.exp(-alpha * np.arange(len(similarities)))
+        weights /= np.sum(weights)
+        # 计算加权相似度
+        weighted_similarities = np.dot(similarities, weights)
+        # ********************position constraint********************
+        distance_tag = distance < 0.05
+        # ********************target constraint********************
         error_vector = observation - self.target_pos
         dlo_error = np.sqrt(np.sum(error_vector * error_vector) / self.target_num)
-        done = dlo_error < 0.005
-        reward = -dlo_error + 0.5 * done
-        # print('reward:', reward)
-        truncated = self.steps >= 100
+        # ********************action penalty********************
+        warning = np.linalg.norm(current_pose1[[0, 1]] - current_pose2[[0, 1]]) > 0.48 # punish the stretching of the cable
+        # ********************reward********************
+        done = dlo_error < 0.01
+        reward = - 2 * dlo_error + 0.05 * weighted_similarities - 1 * distance_tag - 1 * warning + 10 * done
+        if done:
+            print('task done.')
+        print("dlo_error:", dlo_error)
+        print('action_scaled:', action_scaled)
+        print('reward:', reward)
+        # ******************termination********************
+        current_tcp_left = observation[-1]
+        current_tcp_right = observation[-2]
+        if current_tcp_left[0] < -0.1 or current_tcp_left[0] > 0.30 or current_tcp_left[1] < 0.35 or current_tcp_left[1] > 0.75:
+            print('left arm out of range.')
+            truncated = True
+        if current_tcp_right[0] < 0.20 or current_tcp_right[0] > 0.51 or current_tcp_right[1] < 0.35 or current_tcp_right[
+            1] > 0.75:
+            print('right arm out of range.')
+            truncated = True
+        # print('current_tcp_left:', current_tcp_left)
+        # print('current_tcp_right:', current_tcp_right)
+        if self.steps >= 500:
+            print('maximal steps reached.')
+            truncated = True
         info = self._get_info()
 
         return observation, reward, done, truncated, info
@@ -251,8 +318,9 @@ class UR5eEnv(gym.Env):
             error2 = np.linalg.norm(target_pose2[0:3] - current_pose2[0:3])
             if self._render_mode == "human":
                 self._render_frame()
-            # else:
-            #     time.sleep(0.1)
+            else:
+                # time.sleep(self._timestep)
+                pass
             if error1 < 0.005 and error2 < 0.005:
                 break
         print(self._physics.bind(self._arm.joints).qpos)
@@ -282,7 +350,8 @@ class UR5eEnv(gym.Env):
         if self._render_mode == "rgb_array":
             return self._render_frame()
         else:
-            time.sleep(0.1)
+            pass
+            # time.sleep(self._timestep)
 
     def _render_frame(self) -> None:
         """

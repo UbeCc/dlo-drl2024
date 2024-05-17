@@ -29,7 +29,14 @@ To run the example, use the following command:
 ```bash
 python ur5e_demo.py
 ```
+## Training visualization
 
+To visualize the training process, you can use the following command:
+
+```bash
+tensorboard --logdir=./TD3_tensorboard
+```
+Then you can open your browser and visit http://localhost:6006/ to see the training process.
 ## Environment Details
 
 ### Observation Space

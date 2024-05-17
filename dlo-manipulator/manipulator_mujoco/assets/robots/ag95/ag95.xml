@@ -124,7 +124,7 @@
     </equality>
 
     <actuator>
-      <motor name="fingers_actuator" tendon="split" />
+      <general name="fingers_actuator" tendon="split" />
     </actuator>
 
   </mujoco>
