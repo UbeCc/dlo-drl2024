@@ -172,7 +172,7 @@ class UR5eEnv(gym.Env):
             for i in range(self.target_num):
                 self._targets[str(i)].set_mocap_pose(self._physics, position=[self.target_pos[i][1], self.target_pos[i][0], 0], quaternion=[0, 0, 0, 1])
 
-            for i in range(20):
+            for i in range(10):
                 self.step([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
         self.steps = 0
@@ -209,9 +209,6 @@ class UR5eEnv(gym.Env):
         self.control_steps = 0
         # 如果目标位置不合理，则直接失败，退出
         distance = np.linalg.norm(target_pose1[[0, 1]] - target_pose2[[0, 1]])
-        # if distance < 0.05:
-        #     print('distance too near.')
-        #     truncated = True
         if distance > 0.53:
             print('distance too far.')
             truncated = True
@@ -268,35 +265,45 @@ class UR5eEnv(gym.Env):
         # 计算加权相似度
         weighted_similarities = np.dot(similarities, weights)
         # ********************position constraint********************
-        distance_tag = distance < 0.05
+        distance_tag = distance < 0.1
+        distance_tag = distance > 0.53
         # ********************target constraint********************
         error_vector = observation - self.target_pos
         dlo_error = np.sqrt(np.sum(error_vector * error_vector) / self.target_num)
         # ********************action penalty********************
-        warning = np.linalg.norm(current_pose1[[0, 1]] - current_pose2[[0, 1]]) > 0.48 # punish the stretching of the cable
-        # ********************reward********************
-        done = dlo_error < 0.01
-        reward = - 2 * dlo_error + 0.05 * weighted_similarities - 1 * distance_tag - 1 * warning + 10 * done
-        if done:
-            print('task done.')
-        print("dlo_error:", dlo_error)
-        print('action_scaled:', action_scaled)
-        print('reward:', reward)
+        warning = np.linalg.norm(current_pose1[[0, 1]] - current_pose2[[0, 1]]) > 0.45 # punish the stretching of the cable
         # ******************termination********************
         current_tcp_left = observation[-1]
         current_tcp_right = observation[-2]
-        if current_tcp_left[0] < -0.1 or current_tcp_left[0] > 0.30 or current_tcp_left[1] < 0.35 or current_tcp_left[1] > 0.75:
-            print('left arm out of range.')
-            truncated = True
-        if current_tcp_right[0] < 0.20 or current_tcp_right[0] > 0.51 or current_tcp_right[1] < 0.35 or current_tcp_right[
+        if current_tcp_left[0] < -0.1 or current_tcp_left[0] > 0.30 or current_tcp_left[1] < 0.35 or current_tcp_left[
             1] > 0.75:
+            print('left arm out of range.')
+            distance_tag = True
+            truncated = True
+        if current_tcp_right[0] < 0.20 or current_tcp_right[0] > 0.51 or current_tcp_right[1] < 0.35 or \
+                current_tcp_right[
+                    1] > 0.75:
             print('right arm out of range.')
+            distance_tag = True
             truncated = True
         # print('current_tcp_left:', current_tcp_left)
         # print('current_tcp_right:', current_tcp_right)
         if self.steps >= 500:
             print('maximal steps reached.')
             truncated = True
+        # ********************reward********************
+        done_1 = dlo_error < 0.07
+        done_2 = dlo_error < 0.05
+        done_3 = dlo_error < 0.03
+        done = dlo_error < 0.01
+        reward = - 5 * dlo_error + 0.15 * weighted_similarities - 20 * distance_tag - 1 * warning + 30 * done + 2 * done_1 + 4 * done_2 + 6 * done_3
+        if done:
+            print('task done.')
+        print("dlo_error:", dlo_error)
+        print('action_scaled:', action_scaled)
+        print('reward:', reward)
+
+
         info = self._get_info()
 
         return observation, reward, done, truncated, info
