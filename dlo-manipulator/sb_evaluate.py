@@ -128,6 +128,6 @@ set_global_seed(seed, env)
 
 
 # Optionally: Load the final model and evaluate again
-loaded_model = DDPG.load(os.path.join(log_dir, "ws_saved/last_model_best.zip"))
+loaded_model = DDPG.load(os.path.join(log_dir, "best_model.zip"))
 mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True, deterministic=False)
 print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
