@@ -91,6 +91,60 @@ Result:
     <img src="images/td3_res.png" alt="res_td3" width="49%">
 </div>
 
+### SAC
+Run `SAC`
+```bash
+CUDA_VISIBLE_DEVICES=${cuda_ids}  python sb_train_omi_a.py --algo_name=SAC --experiment_name=test
+```
+
+Reward curve: 
+<div align="center">
+    <img src="images/sac_rcurve.png" alt="res_td3" width="49%">
+</div>
+
+Result:
+<div align="center">
+    <img src="images/sac_res.png" alt="res_td3" width="49%">
+</div>
+
+### TQC
+Run `TQC`
+```bash
+CUDA_VISIBLE_DEVICES=${cuda_ids}  python sb_train_omi_a.py --algo_name=TQC --experiment_name=test
+```
+
+Reward curve: 
+<div align="center">
+    <img src="images/tqc_rcurve.png" alt="res_td3" width="49%">
+</div>
+
+Result:
+<div align="center">
+    <img src="images/tqc_res_1.png" alt="res_td3" width="49%">
+</div>
+
+<div align="center">
+    <img src="images/tqc_res_2.png" alt="res_td3" width="49%">
+</div>
+
+
+### TRPO
+Run `TRPO`
+```bash
+CUDA_VISIBLE_DEVICES=${cuda_ids}  python sb_train_omi_a.py --algo_name=TRPO --experiment_name=test
+```
+
+Reward curve: 
+<div align="center">
+    <img src="images/trpo_rcurve" alt="res_td3" width="49%">
+</div>
+
+Result:
+<div align="center">
+    <img src="images/trpo_res.png" alt="res_td3" width="49%">
+</div>
+
+
 
 ### DDPG
 Run `DDPG`

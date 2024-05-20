@@ -147,7 +147,7 @@ def exponential_decay_schedule(initial_learning_rate: float, decay_factor: float
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--experiment_name", type=str, required=True, help="Name of the experiment")
+    # parser.add_argument("--experiment_name", type=str, required=True, help="Name of the experiment")
     parser.add_argument("--schedule", type=str, help="Learning rate schedule: 'linear', 'exp' or 'cos'", default="linear")
     parser.add_argument("--device", type=str, default="0", help="CUDA device number, e.g., '0' for /gpu:0")
     parser.add_argument("--env", type=str, default='UR5eEnv-v0', help="Environment ID")
@@ -165,44 +165,44 @@ if __name__ == "__main__":
     os.environ["CUDA_VISIBLE_DEVICES"] = args.device
 
     # Create log dir with experiment name and timestamp
-    time_stamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    args.log_dir = f"./logs_{args.algo_name}"
-    os.makedirs(args.log_dir, exist_ok=True)
-    log_dir = os.path.join(args.log_dir, f"{args.experiment_name}_{time_stamp}")
-    os.makedirs(log_dir, exist_ok=True)
+    # time_stamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    # args.log_dir = f"./logs_{args.algo_name}"
+    # os.makedirs(args.log_dir, exist_ok=True)
+    # log_dir = os.path.join(args.log_dir, f"{args.experiment_name}_{time_stamp}")
+    # os.makedirs(log_dir, exist_ok=True)
 
     # Set random seeds for reproducibility
     seed = args.seed
 
     # Create and wrap the environment
     env = gymnasium.make(f"manipulator_mujoco/{args.env}", render_mode=args.render_mode)
-    env = Monitor(env, log_dir)
+    # env = Monitor(env, log_dir)
 
     # Set global seed
     set_global_seed(seed, env)
 
-    # Add some action noise for exploration
-    n_actions = env.action_space.shape[-1]
-    action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.3 * np.ones(n_actions))
+    # # Add some action noise for exploration
+    # n_actions = env.action_space.shape[-1]
+    # action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.3 * np.ones(n_actions))
 
-    # Define initial learning rate and decay parameters
-    initial_learning_rate = args.learning_rate
-    decay_factor = args.decay_factor
-    decay_steps = args.decay_steps  # Adjust according to your total training steps
+    # # Define initial learning rate and decay parameters
+    # initial_learning_rate = args.learning_rate
+    # decay_factor = args.decay_factor
+    # decay_steps = args.decay_steps  # Adjust according to your total training steps
 
-    # Total training steps
-    timesteps = args.timesteps
+    # # Total training steps
+    # timesteps = args.timesteps
 
-    schedule = args.schedule
+    # schedule = args.schedule
     # Create a learning rate schedule with exponential decay
-    if schedule == "exp":
-        lr_schedule = exponential_decay_schedule(initial_learning_rate, decay_factor, decay_steps, timesteps)
-    elif schedule == "linear":
-        lr_schedule = linear_schedule(0.001)
-    elif schedule == "cos":
-        lr_schedule = cosine_decay_schedule(initial_learning_rate, timesteps)
-    else:
-        raise NotImplementedError
+    # if schedule == "exp":
+    #     lr_schedule = exponential_decay_schedule(initial_learning_rate, decay_factor, decay_steps, timesteps)
+    # elif schedule == "linear":
+    #     lr_schedule = linear_schedule(0.001)
+    # elif schedule == "cos":
+    #     lr_schedule = cosine_decay_schedule(initial_learning_rate, timesteps)
+    # else:
+    #     raise NotImplementedError
 
 
     # algo_name = "TD3"
@@ -234,39 +234,45 @@ if __name__ == "__main__":
     #              tensorboard_log="./DDPG_tensorboard/")
     
     # Create a DDPG model with the learning rate schedule
-    if args.algo_name == "TRPO":
-        model = RLAlgo("MlpPolicy", env,
-                learning_rate=lr_schedule,  # Set the learning rate schedule
-                verbose=1,
-                seed=seed,
-                policy_kwargs={"net_arch": [256, 256]},
-                tensorboard_log=f"./{args.algo_name}_tensorboard/")
-    else:
-        model = RLAlgo("MlpPolicy", env,
-                    action_noise=action_noise,
-                    learning_starts=2000,
-                    learning_rate=lr_schedule,  # Set the learning rate schedule
-                    verbose=1,
-                    seed=seed,
-                    policy_kwargs={"net_arch": [256, 256]},
-                    tensorboard_log=f"./{args.algo_name}_tensorboard/")
+    # if args.algo_name == "TRPO":
+    #     model = RLAlgo("MlpPolicy", env,
+    #             learning_rate=lr_schedule,  # Set the learning rate schedule
+    #             verbose=1,
+    #             seed=seed,
+    #             policy_kwargs={"net_arch": [256, 256]},
+    #             tensorboard_log=f"./{args.algo_name}_tensorboard/")
+    # else:
+    #     model = RLAlgo("MlpPolicy", env,
+    #                 action_noise=action_noise,
+    #                 learning_starts=2000,
+    #                 learning_rate=lr_schedule,  # Set the learning rate schedule
+    #                 verbose=1,
+    #                 seed=seed,
+    #                 policy_kwargs={"net_arch": [256, 256]},
+    #                 tensorboard_log=f"./{args.algo_name}_tensorboard/")
 
 
-    # Create the callback: check every 1000 steps
-    callback = SaveOnBestTrainingRewardCallback(check_freq=args.check_freq, log_dir=log_dir)
+    # # Create the callback: check every 1000 steps
+    # callback = SaveOnBestTrainingRewardCallback(check_freq=args.check_freq, log_dir=log_dir)
 
-    # Train the agent
-    model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name=f"{args.experiment_name}_{time_stamp}", log_interval=1)
+    # # Train the agent
+    # model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name=f"{args.experiment_name}_{time_stamp}", log_interval=1)
 
     # After training, evaluate the agent
-    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render=True)
-    print(f"Mean reward: {mean_reward} +/- {std_reward}")
+    # mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render=True)
+    # print(f"Mean reward: {mean_reward} +/- {std_reward}")
 
 
     # Optionally: Load the final model and evaluate again
-    loaded_model = RLAlgo.load(os.path.join(log_dir, "best_model"))
-    mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
+    if args.algo_name in ['TRPO', 'TQC']:
+        loaded_model = RLAlgo.load(os.path.join(args.log_dir, "best_model.zip"))
+    else:
+        loaded_model = RLAlgo.load(os.path.join(args.log_dir, "best_model.zip"))
+    # mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
+    mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True, deterministic=False)
     print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
 
-    # CUDA_VISIBLE_DEVICES=3  python sb_train_omi_a.py --algo_name=SAC --experiment_name=test
+    # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=TQC --log_dir="./logs_TQC_decay" --render_mode=human
+    # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./sac_logs_decay" --render_mode=human
+    # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=TRPO --log_dir="./logs_TRPO_decay" --render_mode=human
 
