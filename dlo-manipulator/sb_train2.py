@@ -126,12 +126,15 @@ timesteps = 200000
 # Create a learning rate schedule with exponential decay
 lr_schedule = exponential_decay_schedule(initial_learning_rate, decay_factor, decay_steps, timesteps)
 
+verbose = 1
+# verbose = 0
+
 # Create a DDPG model with the learning rate schedule
 model = DDPG("MlpPolicy", env,
              action_noise=action_noise,
              learning_starts=2000,
              learning_rate=lr_schedule,  # Set the learning rate schedule
-             verbose=1,
+             verbose=verbose,
              seed=seed,
              policy_kwargs={"net_arch": [256, 256]},
              tensorboard_log="./DDPG_tensorboard/")
