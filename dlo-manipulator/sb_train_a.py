@@ -10,7 +10,8 @@ import random
 import numpy as np
 import gymnasium
 # from stable_baselines3 import DDPG
-from stable_baselines3 import TD3, TQC
+from stable_baselines3 import TD3
+from sb3_contrib import TQC, TRPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.callbacks import BaseCallback
@@ -101,6 +102,17 @@ def exponential_decay_schedule(initial_learning_rate: float, decay_factor: float
 
 
 algo_name = "TD3"
+algo_name = "TQC"
+algo_name = "TRPO"
+
+if algo_name == "TD3":
+    RLAlgo = TD3
+elif algo_name == "TQC":
+    RLAlgo = TQC
+elif algo_name == "TRPO":
+    RLAlgo = TRPO
+else:
+    raise ValueError(f"Unrecognized algo_name: {algo_name}")
 
 # if algo_name =
 
@@ -138,14 +150,22 @@ verbose = 1
 # verbose = 0
 
 # Create a DDPG model with the learning rate schedule
-model = TD3("MlpPolicy", env,
-             action_noise=action_noise,
-             learning_starts=2000,
+if algo_name == "TRPO":
+    model = RLAlgo("MlpPolicy", env,
              learning_rate=lr_schedule,  # Set the learning rate schedule
              verbose=verbose,
              seed=seed,
              policy_kwargs={"net_arch": [256, 256]},
              tensorboard_log=f"./{algo_name}_tensorboard/")
+else:
+    model = RLAlgo("MlpPolicy", env,
+                action_noise=action_noise,
+                learning_starts=2000,
+                learning_rate=lr_schedule,  # Set the learning rate schedule
+                verbose=verbose,
+                seed=seed,
+                policy_kwargs={"net_arch": [256, 256]},
+                tensorboard_log=f"./{algo_name}_tensorboard/")
 
 # Create the callback: check every 1000 steps
 callback = SaveOnBestTrainingRewardCallback(check_freq=1000, log_dir=log_dir)
@@ -158,8 +178,8 @@ mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render
 print(f"Mean reward: {mean_reward} +/- {std_reward}")
 
 # Optionally: Load the final model and evaluate again
-loaded_model = TD3.load(os.path.join(log_dir, "best_model"))
+loaded_model = RLAlgo.load(os.path.join(log_dir, "best_model"))
 mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
 print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
 
-# CUDA_VISIBLE_DEVICES=1  python sb_train_td3.py
+# CUDA_VISIBLE_DEVICES=3  python sb_train_a.py

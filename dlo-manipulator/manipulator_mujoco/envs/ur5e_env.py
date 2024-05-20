@@ -303,16 +303,16 @@ class UR5eEnv(gym.Env):
                  + 500 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 +8 * done_4 + 10 * done_5
         if done:
             print('task done.')
-<<<<<<< HEAD
+# <<<<<<< HEAD
         # print("dlo_error:", dlo_error)
         # print('action_scaled:', action_scaled)
         # print('reward:', reward)
-=======
-        print("dlo_error:", dlo_error)
-        print('action_scaled:', action_scaled)
-        print('reward:', reward)
-        # print("time_cost:", time.time() - time_control_start)
->>>>>>> f57ca0d694f7629a1fd9891aed9ab7172d6a1ae9
+# =======
+#         print("dlo_error:", dlo_error)
+#         print('action_scaled:', action_scaled)
+#         print('reward:', reward)
+#         # print("time_cost:", time.time() - time_control_start)
+# >>>>>>> f57ca0d694f7629a1fd9891aed9ab7172d6a1ae9
 
 
         info = self._get_info()

@@ -10,7 +10,7 @@ import random
 import numpy as np
 import gymnasium
 # from stable_baselines3 import DDPG
-from stable_baselines3 import TD3, TQC
+from stable_baselines3 import TD3, SAC
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.callbacks import BaseCallback
@@ -98,15 +98,10 @@ def exponential_decay_schedule(initial_learning_rate: float, decay_factor: float
         return initial_learning_rate * (decay_factor ** (current_step // decay_steps))
     return schedule
 
-
-
-algo_name = "TD3"
-
-# if algo_name =
-
 # Create log dir
 # log_dir = "./logs_decay/"
-log_dir = f"./logs_{algo_name}_decay/"
+# log_dir = "./td3_logs_decay/"
+log_dir = "./sac_logs_decay/"
 os.makedirs(log_dir, exist_ok=True)
 
 # Set random seeds for reproducibility
@@ -138,14 +133,14 @@ verbose = 1
 # verbose = 0
 
 # Create a DDPG model with the learning rate schedule
-model = TD3("MlpPolicy", env,
+model = SAC("MlpPolicy", env,
              action_noise=action_noise,
              learning_starts=2000,
              learning_rate=lr_schedule,  # Set the learning rate schedule
              verbose=verbose,
              seed=seed,
              policy_kwargs={"net_arch": [256, 256]},
-             tensorboard_log=f"./{algo_name}_tensorboard/")
+             tensorboard_log="./TD3_tensorboard/")
 
 # Create the callback: check every 1000 steps
 callback = SaveOnBestTrainingRewardCallback(check_freq=1000, log_dir=log_dir)
@@ -158,8 +153,8 @@ mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render
 print(f"Mean reward: {mean_reward} +/- {std_reward}")
 
 # Optionally: Load the final model and evaluate again
-loaded_model = TD3.load(os.path.join(log_dir, "best_model"))
+loaded_model = SAC.load(os.path.join(log_dir, "best_model"))
 mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
 print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
 
-# CUDA_VISIBLE_DEVICES=1  python sb_train_td3.py
+# CUDA_VISIBLE_DEVICES=0  python sb_train_sac.py
