@@ -2,3 +2,7 @@
 dlo-manipulator/DDPG_tensorboard
 
 dlo-manipulator/*tensorboard
+
+dlo-manipulator/logs_*
+
+dlo-manipulator/*_logs*

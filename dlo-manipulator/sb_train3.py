@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time         : 2024/5/18 14:51
+# @Time         : 2024/5/19 21:35
 # @Author       : Wang Song
-# @File         : sb_evaluate.py
+# @File         : sb_train3.py
 # @Software     : PyCharm
 # @Description  :
 import os
 import random
+from typing import Callable
+
 import numpy as np
 import gymnasium
 from stable_baselines3 import DDPG
@@ -16,6 +18,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.evaluation import evaluate_policy
 import manipulator_mujoco
+from datetime import datetime
 
 
 def set_global_seed(seed: int, env=None):
@@ -84,51 +87,67 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
 
         return True
 
+def linear_schedule(initial_value: float) -> Callable[[float], float]:
+    """
+    Linear learning rate schedule.
+
+    :param initial_value: Initial learning rate.
+    :return: schedule that computes
+      current learning rate depending on remaining progress
+    """
+    def func(progress_remaining: float) -> float:
+        """
+        Progress will decrease from 1 (beginning) to 0.
+
+        :param progress_remaining:
+        :return: current learning rate
+        """
+        return progress_remaining * initial_value
+
+    return func
 
 # Create log dir
-log_dir = "./logs_linear/"
+date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+log_dir = f"./logs_linear/{date}/"
 os.makedirs(log_dir, exist_ok=True)
 
 # Set random seeds for reproducibility
 seed = 3407
 
 # Create and wrap the environment
-env = gymnasium.make('manipulator_mujoco/UR5eEnv-v1', render_mode="human")
+env = gymnasium.make('manipulator_mujoco/UR5eEnv-v1', render_mode="rgb_array")
 env = Monitor(env, log_dir)
 
 # Set global seed
 set_global_seed(seed, env)
 
-# # Add some action noise for exploration
-# n_actions = env.action_space.shape[-1]
-# action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.2 * np.ones(n_actions))
-#
-# # Create a DDPG model
-# model = DDPG("MlpPolicy", env,
-#              action_noise=action_noise,
-#              learning_starts=2000,
-#              verbose=1,
-#              seed=seed,
-#              policy_kwargs={"net_arch": [64, 64]},
-#              tensorboard_log="./DDPG_tensorboard/")
-#
-# # Load pretrained model
-# model.load("./logs/best_model_ddpg2.zip")
-#
-# # Create the callback: check every 1000 steps
-# callback = SaveOnBestTrainingRewardCallback(check_freq=1000, log_dir=log_dir)
-
-# # Train the agent
-# timesteps = 200000
-# model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name="run_env_v32_3", log_interval=1)
-
-# # After training, evaluate the agent
-# mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render=True)
-# print(f"Mean reward: {mean_reward} +/- {std_reward}")
+# Add some action noise for exploration
+n_actions = env.action_space.shape[-1]
+action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.3 * np.ones(n_actions))
 
 
-# Optionally: Load the final model and evaluate again
-log_dir = "./logs_linear/2024-05-19-23-36-38/"
-loaded_model = DDPG.load(os.path.join(log_dir, "best_model.zip"))
-mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True, deterministic=False)
-print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
+# Create a DDPG model with the learning rate schedule
+model = DDPG("MlpPolicy", env,
+             action_noise=action_noise,
+             learning_starts=2000,
+             learning_rate=linear_schedule(0.001),
+             verbose=1,
+             seed=seed,
+             policy_kwargs={"net_arch": [256, 256]},
+             tensorboard_log="./DDPG_tensorboard/")
+
+# Create the callback: check every 1000 steps
+callback = SaveOnBestTrainingRewardCallback(check_freq=1000, log_dir=log_dir)
+
+# Train the agent
+timesteps = 200000
+model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name="run_env_v1", log_interval=1)
+
+# After training, evaluate the agent
+mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render=True)
+print(f"Mean reward: {mean_reward} +/- {std_reward}")
+
+# # Optionally: Load the final model and evaluate again
+# loaded_model = DDPG.load(os.path.join(log_dir, "final_model"))
+# mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
+# print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
