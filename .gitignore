@@ -6,3 +6,11 @@ dlo-manipulator/*tensorboard
 dlo-manipulator/logs_*
 
 dlo-manipulator/*_logs*
+
+.idea
+
+*/.idea
+
+*.csv
+
+*/*.csv

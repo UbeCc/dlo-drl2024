@@ -160,15 +160,16 @@ if __name__ == "__main__":
     parser.add_argument("--timesteps", type=int, default=200000, help="Total training timesteps")
     parser.add_argument("--check_freq", type=int, default=1000, help="Frequency of checks for best model")
     parser.add_argument("--algo_name", type=str, default='DDPG', help="Directory for logging")
+    parser.add_argument("--action_noise_sigma", type=float, default=0.3, help="Decay factor for exp")
     args = parser.parse_args()
 
-    os.environ["CUDA_VISIBLE_DEVICES"] = args.device
+    # os.environ["CUDA_VISIBLE_DEVICES"] = args.device
 
     # Create log dir with experiment name and timestamp
     time_stamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     args.log_dir = f"./logs_{args.algo_name}"
     os.makedirs(args.log_dir, exist_ok=True)
-    log_dir = os.path.join(args.log_dir, f"{args.experiment_name}_{time_stamp}")
+    log_dir = os.path.join(args.log_dir, f"{args.experiment_name}_{time_stamp}_seed{args.seed}_noisesigma{args.action_noise_sigma}_lr{args.learning_rate}")
     os.makedirs(log_dir, exist_ok=True)
 
     # Set random seeds for reproducibility
@@ -183,7 +184,7 @@ if __name__ == "__main__":
 
     # Add some action noise for exploration
     n_actions = env.action_space.shape[-1]
-    action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.3 * np.ones(n_actions))
+    action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=args.action_noise_sigma * np.ones(n_actions))
 
     # Define initial learning rate and decay parameters
     initial_learning_rate = args.learning_rate
@@ -268,5 +269,5 @@ if __name__ == "__main__":
     mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
     print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
 
-    # CUDA_VISIBLE_DEVICES=3  python sb_train_omi_a.py --algo_name=SAC --experiment_name=test
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test --action_noise_sigma=0.0 --learning_rate=0.0003
 
