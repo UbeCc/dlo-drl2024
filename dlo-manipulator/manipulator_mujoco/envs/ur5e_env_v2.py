@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time         : 2024/5/19 14:44
+# @Time         : 2024/5/20 11:45
 # @Author       : Wang Song
-# @File         : ur5e_env_v1.py
+# @File         : ur5e_env_v2.py.py
 # @Software     : PyCharm
-# @Description  :Add the target information to the observation space and smooth the reward function.
+# @Description  :
 import time
 import os
 import numpy as np
@@ -21,7 +21,7 @@ from manipulator_mujoco.props import Primitive
 import json
 
 
-class UR5eEnv_v1(gym.Env):
+class UR5eEnv_v2(gym.Env):
     metadata = {
         "render_modes": ["human", "rgb_array"],
         "render_fps": None,
@@ -30,7 +30,7 @@ class UR5eEnv_v1(gym.Env):
     def seed(self, seed):
         np.random.seed(seed)
     def __init__(self, render_mode=None):
-        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(84, 2), dtype=np.float64)
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(42, 2), dtype=np.float64)
         self.action_space = spaces.Box(low=-1, high=1, shape=(6,), dtype=np.float64)
         self.low = np.array([-0.02, -0.02, -0.1, -0.02, -0.02, -0.1], dtype=np.float32)
         self.high = np.array([0.02, 0.02, 0.1, 0.02, 0.02, 0.1], dtype=np.float32)
@@ -195,13 +195,10 @@ class UR5eEnv_v1(gym.Env):
         self.steps = 0
         observation = self._get_obs()
         # normalization the observation
-        min_vals = np.array([0, 0.25])
-        max_vals = np.array([0.5, 0.75])
-        observation = (observation - min_vals) / (max_vals - min_vals)
-        scaled_combined_state = 2 * observation - 1
+        observation_error = np.abs(observation[0:42] - observation[42:])
         info = self._get_info()
         # self.init_grasp()
-        return scaled_combined_state, info
+        return observation_error, info
 
     def step(self, action: np.ndarray) -> tuple:
         time_control_start = time.time()
@@ -332,13 +329,11 @@ class UR5eEnv_v1(gym.Env):
         print('action_scaled:', action_scaled)
         print('reward:', reward)
         info = self._get_info()
-        # normalization the observation
-        min_vals = np.array([0, 0.25])
-        max_vals = np.array([0.5, 0.75])
-        observation1 = (observation1 - min_vals) / (max_vals - min_vals)
-        scaled_combined_state = 2 * observation1 - 1
+        # generate observation_error
+        observation_error = np.abs(observation1[0:42] - observation1[42:])
+
         # print("time_cost:", time.time() - time_control_start)
-        return scaled_combined_state, reward, done, truncated, info
+        return observation_error, reward, done, truncated, info
 
     def calculate_reward(self, dlo_error, weighted_similarities, distance_tag, warning,done):
         # 平滑的误差奖励

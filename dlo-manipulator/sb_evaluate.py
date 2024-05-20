@@ -9,7 +9,7 @@ import os
 import random
 import numpy as np
 import gymnasium
-from stable_baselines3 import DDPG
+from stable_baselines3 import DDPG, PPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.callbacks import BaseCallback
@@ -93,7 +93,7 @@ os.makedirs(log_dir, exist_ok=True)
 seed = 3407
 
 # Create and wrap the environment
-env = gymnasium.make('manipulator_mujoco/UR5eEnv-v1', render_mode="human")
+env = gymnasium.make('manipulator_mujoco/UR5eEnv-v2', render_mode="human")
 env = Monitor(env, log_dir)
 
 # Set global seed
@@ -128,7 +128,7 @@ set_global_seed(seed, env)
 
 
 # Optionally: Load the final model and evaluate again
-log_dir = "./logs_linear/2024-05-19-23-36-38/"
-loaded_model = DDPG.load(os.path.join(log_dir, "best_model.zip"))
+log_dir = "./logs_ppo/ppov2_2024-05-20-18-24-01"
+loaded_model = PPO.load(os.path.join(log_dir, "best_model.zip"))
 mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True, deterministic=False)
 print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")

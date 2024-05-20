@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# @Time         : 2024/5/20 14:39
+# @Author       : Wang Song
+# @File         : train_ppo.py
+# @Software     : PyCharm
+# @Description  :
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # @Time         : 2024/5/20 9:51
 # @Author       : Wang Song
 # @File         : sb_train_omni.py
@@ -12,9 +19,8 @@ import random
 import numpy as np
 import gymnasium
 from datetime import datetime
-from stable_baselines3 import DDPG
+from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.evaluation import evaluate_policy
@@ -148,13 +154,13 @@ if __name__ == "__main__":
     parser.add_argument("--experiment_name", type=str, required=True, help="Name of the experiment")
     parser.add_argument("--schedule", type=str, help="Learning rate schedule: 'linear', 'exp' or 'cos'", default="linear")
     parser.add_argument("--device", type=str, default="0", help="CUDA device number, e.g., '0' for /gpu:0")
-    parser.add_argument("--env", type=str, default='UR5eEnv-v1', help="Environment ID")
+    parser.add_argument("--env", type=str, default='UR5eEnv-v0', help="Environment ID")
     parser.add_argument("--render_mode", type=str, default='rgb_array', help="Render mode for the environment")
     parser.add_argument("--learning_rate", type=float, default=0.0005, help="Initial learning rate for cos, linear is 0.001")
     parser.add_argument("--decay_factor", type=float, default=0.99, help="Decay factor for exp")
     parser.add_argument("--decay_steps", type=int, default=10000, help="Decay steps for exp")
     parser.add_argument("--seed", type=int, default=3407, help="Random seed")
-    parser.add_argument("--log_dir", type=str, default='./logs_ddpg/', help="Directory for logging")
+    parser.add_argument("--log_dir", type=str, default='./logs_ppo/', help="Directory for logging")
     parser.add_argument("--timesteps", type=int, default=200000, help="Total training timesteps")
     parser.add_argument("--check_freq", type=int, default=1000, help="Frequency of checks for best model")
     args = parser.parse_args()
@@ -176,10 +182,6 @@ if __name__ == "__main__":
     # Set global seed
     set_global_seed(seed, env)
 
-    # Add some action noise for exploration
-    n_actions = env.action_space.shape[-1]
-    action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.3 * np.ones(n_actions))
-
     # Define initial learning rate and decay parameters
     initial_learning_rate = args.learning_rate
     decay_factor = args.decay_factor
@@ -193,21 +195,19 @@ if __name__ == "__main__":
     if schedule == "exp":
         lr_schedule = exponential_decay_schedule(initial_learning_rate, decay_factor, decay_steps, timesteps)
     elif schedule == "linear":
-        lr_schedule = linear_schedule(0.001)
+        lr_schedule = linear_schedule(3e-4)
     elif schedule == "cos":
         lr_schedule = cosine_decay_schedule(initial_learning_rate, timesteps)
     else:
         raise NotImplementedError
 
-    # Create a DDPG model with the learning rate schedule
-    model = DDPG("MlpPolicy", env,
-                 action_noise=action_noise,
-                 learning_starts=2000,
-                 learning_rate=lr_schedule,  # Set the learning rate schedule
+    # Create a PPO model with the learning rate schedule
+    model = PPO("MlpPolicy", env,
+                 # learning_rate=lr_schedule,  # Set the learning rate schedule
                  verbose=1,
                  seed=seed,
                  policy_kwargs={"net_arch": [256, 256]},
-                 tensorboard_log="./DDPG_tensorboard/")
+                 tensorboard_log="./PPO_tensorboard/")
 
     # Create the callback: check every 1000 steps
     callback = SaveOnBestTrainingRewardCallback(check_freq=args.check_freq, log_dir=log_dir)
@@ -218,5 +218,3 @@ if __name__ == "__main__":
     # After training, evaluate the agent
     mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render=True)
     print(f"Mean reward: {mean_reward} +/- {std_reward}")
-
-
