@@ -11,6 +11,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.evaluation import evaluate_policy
 import manipulator_mujoco
+from datetime import datetime
 
 
 def set_global_seed(seed: int, env=None):
@@ -99,7 +100,8 @@ def linear_schedule(initial_value: float) -> Callable[[float], float]:
     return func
 
 # Create log dir
-log_dir = "./logs_linear/"
+date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+log_dir = f"./logs_linear/{date}/"
 os.makedirs(log_dir, exist_ok=True)
 
 # Set random seeds for reproducibility
@@ -132,7 +134,7 @@ callback = SaveOnBestTrainingRewardCallback(check_freq=1000, log_dir=log_dir)
 
 # Train the agent
 timesteps = 200000
-model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name="run_env_v32_3", log_interval=1)
+model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name="run_env_v1", log_interval=1)
 
 # After training, evaluate the agent
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, render=True)

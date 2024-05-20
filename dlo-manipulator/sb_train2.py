@@ -16,6 +16,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.evaluation import evaluate_policy
 import manipulator_mujoco
+from datetime import datetime
 
 def set_global_seed(seed: int, env=None):
     """
@@ -27,6 +28,7 @@ def set_global_seed(seed: int, env=None):
     random.seed(seed)
     np.random.seed(seed)
     if env is not None:
+        env.seed(seed)
         env.action_space.seed(seed)
         env.observation_space.seed(seed)
 
@@ -98,7 +100,8 @@ def exponential_decay_schedule(initial_learning_rate: float, decay_factor: float
     return schedule
 
 # Create log dir
-log_dir = "./logs_decay/"
+date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+log_dir = f"./logs_decay/{date}/"
 os.makedirs(log_dir, exist_ok=True)
 
 # Set random seeds for reproducibility
@@ -150,3 +153,4 @@ print(f"Mean reward: {mean_reward} +/- {std_reward}")
 loaded_model = DDPG.load(os.path.join(log_dir, "final_model"))
 mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
 print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
+

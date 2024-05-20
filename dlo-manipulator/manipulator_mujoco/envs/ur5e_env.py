@@ -18,7 +18,8 @@ class UR5eEnv(gym.Env):
         "render_modes": ["human", "rgb_array"],
         "render_fps": None,
     }  # TODO add functionality to render_fps
-
+    def seed(self, seed):
+        np.random.seed(seed)
     def __init__(self, render_mode=None):
         self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(42,2), dtype=np.float64)
         self.action_space = spaces.Box(low=-1, high=1, shape=(6,), dtype=np.float64)
@@ -299,12 +300,13 @@ class UR5eEnv(gym.Env):
         done_5 = dlo_error < 0.015
         done = dlo_error < 0.01
         reward = - 5 * dlo_error + 0.15 * weighted_similarities - 20 * distance_tag - 1 * warning\
-                 + 50 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 +8 * done_4 + 10 * done_5
+                 + 500 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 +8 * done_4 + 10 * done_5
         if done:
             print('task done.')
         print("dlo_error:", dlo_error)
         print('action_scaled:', action_scaled)
         print('reward:', reward)
+        # print("time_cost:", time.time() - time_control_start)
 
 
         info = self._get_info()
