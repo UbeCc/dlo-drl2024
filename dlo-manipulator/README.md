@@ -73,6 +73,41 @@ where $ d_i $ is the Euclidean distance between the $i$-th pair of actual and ta
 - To increase the operational space, collisions between the UR5e arms themselves are disabled, but collisions between grippers, gripping blocks, and the DLOs are retained.
 
 
+## Result Summary
+
+### TD3
+Run `TD3`
+```bash
+CUDA_VISIBLE_DEVICES=${cuda_ids}  python sb_train_td3.py
+```
+
+Reward curve: 
+<div align="center">
+    <img src="images/td3_log_curve.png" alt="res_td3" width="49%">
+</div>
+
+Result:
+<div align="center">
+    <img src="images/td3_res.png" alt="res_td3" width="49%">
+</div>
+
+
+### DDPG
+Run `DDPG`
+```bash
+CUDA_VISIBLE_DEVICES=${cuda_ids}  python sb_train2.py
+```
+
+Reward curve: 
+<div align="center">
+    <img src="images/ddpg_log_curve.png" alt="res_td3" width="49%">
+</div>
+
+Result:
+<div align="center">
+    <img src="images/ddpg_res.png" alt="res_td3" width="49%">
+</div>
+
 
 # UR5e Reinforcement Learning Environment
 
