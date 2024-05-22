@@ -164,12 +164,19 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # os.environ["CUDA_VISIBLE_DEVICES"] = args.device
+    
+    policy_net_arch = [256, 256]
+    # policy_net_arch = [512, 1024, 512]
+    # policy_net_arch = [512, 1024, 2048, 512]
+    policy_net_arch_strs = [str(ii) for ii in policy_net_arch]
+    policy_net_arch_strs_tag = "_".join(policy_net_arch_strs)
 
     # Create log dir with experiment name and timestamp
+    env_v_tag = args.env.split("-")[-1]
     time_stamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     args.log_dir = f"./logs_{args.algo_name}"
     os.makedirs(args.log_dir, exist_ok=True)
-    log_dir = os.path.join(args.log_dir, f"{args.experiment_name}_{time_stamp}_seed{args.seed}_noisesigma{args.action_noise_sigma}_lr{args.learning_rate}")
+    log_dir = os.path.join(args.log_dir, f"{args.experiment_name}_{time_stamp}_seed{args.seed}_noisesigma{args.action_noise_sigma}_lr{args.learning_rate}_env{env_v_tag}_net{policy_net_arch_strs_tag}")
     os.makedirs(log_dir, exist_ok=True)
 
     # Set random seeds for reproducibility
@@ -234,6 +241,10 @@ if __name__ == "__main__":
     #              policy_kwargs={"net_arch": [256, 256]},
     #              tensorboard_log="./DDPG_tensorboard/")
     
+    
+    
+    
+    
     # Create a DDPG model with the learning rate schedule
     if args.algo_name == "TRPO":
         model = RLAlgo("MlpPolicy", env,
@@ -249,7 +260,7 @@ if __name__ == "__main__":
                     learning_rate=lr_schedule,  # Set the learning rate schedule
                     verbose=1,
                     seed=seed,
-                    policy_kwargs={"net_arch": [256, 256]},
+                    policy_kwargs={"net_arch": policy_net_arch},
                     tensorboard_log=f"./{args.algo_name}_tensorboard/")
 
 
@@ -265,9 +276,15 @@ if __name__ == "__main__":
 
 
     # Optionally: Load the final model and evaluate again
-    loaded_model = RLAlgo.load(os.path.join(log_dir, "best_model"))
+    loaded_model = RLAlgo.load(os.path.join(log_dir, "best_model.zip"))
     mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True)
     print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
 
-    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test --action_noise_sigma=0.0 --learning_rate=0.0003
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v1
+    # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v2
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v2
+    # cuda visible devicies # # 
+    # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v2
+    # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v1 ## add the log files ##
+    # logs_TD3/test_2024-05-20-19-02-49_seed3407_noisesigma0.3_lr0.0005_envv1/best_model 
 

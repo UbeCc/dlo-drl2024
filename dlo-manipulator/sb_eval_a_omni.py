@@ -272,7 +272,8 @@ if __name__ == "__main__":
     mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=10, render=True, deterministic=False)
     print(f"Mean reward after loading: {mean_reward} +/- {std_reward}")
 
+    # /home/xueyi/diffsim/dlo-drl2024/dlo-manipulator/logs_TD3/test_2024-05-21-14-26-11_seed3407_noisesigma0.3_lr0.0005_envv2_net512_1024_2048_512
     # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=TQC --log_dir="./logs_TQC_decay" --render_mode=human
     # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./sac_logs_decay" --render_mode=human
-    # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=TRPO --log_dir="./logs_TRPO_decay" --render_mode=human
-
+    # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=TD3 --log_dir="./logs_TD3/test_2024-05-20-19-05-15_seed3407_noisesigma0.3_lr0.0005_envv2" --render_mode=human --env=UR5eEnv-v2
+    # CUDA_VISIBLE_DEVICES=1  python sb_eval_a_omni.py --algo_name=TD3 --log_dir="./logs_TD3/test_2024-05-22-05-39-01_seed3407_noisesigma0.3_lr0.0005_envv2_net256_256" --render_mode=human --env=UR5eEnv-v2

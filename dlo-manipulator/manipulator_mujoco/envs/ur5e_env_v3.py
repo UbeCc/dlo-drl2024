@@ -21,7 +21,7 @@ from manipulator_mujoco.props import Primitive
 import json
 
 
-class UR5eEnv_v2(gym.Env):
+class UR5eEnv_v3(gym.Env):
     metadata = {
         "render_modes": ["human", "rgb_array"],
         "render_fps": None,
@@ -133,8 +133,7 @@ class UR5eEnv_v2(gym.Env):
         key_pos = self._cable.get_keypoint_pos(self._physics)
         end_pos = self._cable.get_end_pos(self._physics)
         observation = np.concatenate([key_pos, end_pos])
-        # target_pos = np.array(self.generate_target_pos(seed=1))
-        target_pos = np.array(self.target_pos)
+        target_pos = np.array(self.generate_target_pos(seed=1))
         observation = np.concatenate([observation[:, 0:2], target_pos[:, ::-1]])
         return observation[:, ::-1]
 
@@ -196,7 +195,8 @@ class UR5eEnv_v2(gym.Env):
         self.steps = 0
         observation = self._get_obs()
         # normalization the observation
-        observation_error = np.abs(observation[0:42] - observation[42:])
+        # observation_error = np.abs(observation[0:42] - observation[42:])
+        observation_error = observation[0:42] - observation[42:]
         info = self._get_info()
         # self.init_grasp()
         return observation_error, info
@@ -331,7 +331,8 @@ class UR5eEnv_v2(gym.Env):
         # print('reward:', reward)
         info = self._get_info()
         # generate observation_error
-        observation_error = np.abs(observation1[0:42] - observation1[42:])
+        # observation_error = np.abs(observation1[0:42] - observation1[42:])
+        observation_error = observation1[0:42] - observation1[42:]
 
         # print("time_cost:", time.time() - time_control_start)
         return observation_error, reward, done, truncated, info

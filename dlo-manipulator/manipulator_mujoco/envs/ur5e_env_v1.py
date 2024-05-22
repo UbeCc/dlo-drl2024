@@ -133,7 +133,8 @@ class UR5eEnv_v1(gym.Env):
         key_pos = self._cable.get_keypoint_pos(self._physics)
         end_pos = self._cable.get_end_pos(self._physics)
         observation = np.concatenate([key_pos, end_pos])
-        target_pos = np.array(self.generate_target_pos(seed=1))
+        # target_pos = np.array(self.generate_target_pos(seed=1))
+        target_pos = np.array(self.target_pos)
         observation = np.concatenate([observation[:, 0:2], target_pos[:, ::-1]])
         return observation[:, ::-1]
 
@@ -328,9 +329,9 @@ class UR5eEnv_v1(gym.Env):
                  + 1000 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 + 8 * done_4 + 10 * done_5
         if done:
             print('task done.')
-        print("dlo_error:", dlo_error)
-        print('action_scaled:', action_scaled)
-        print('reward:', reward)
+        # print("dlo_error:", dlo_error)
+        # print('action_scaled:', action_scaled)
+        # print('reward:', reward)
         info = self._get_info()
         # normalization the observation
         min_vals = np.array([0, 0.25])
@@ -360,7 +361,7 @@ class UR5eEnv_v1(gym.Env):
         # 总奖励
         reward = smooth_error_reward + smooth_similarity_reward + penalty_distance + penalty_warning + smooth_done_reward + 100 * done
         return reward
-    # 执行最初的抓取动作
+    # 执行最初的抓取动作 
     def init_grasp(self) -> None:
         # 将机械臂移动到初始抓取位置
         target_pose1 = np.array([0.5, 0., 0.02, 0., 0, 0, 1.])
