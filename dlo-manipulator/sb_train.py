@@ -125,7 +125,6 @@ model = DDPG("MlpPolicy", env,
              learning_rate=linear_schedule(0.001),
              verbose=1,
              seed=seed,
-             policy_kwargs={"net_arch": [256, 256]},
              tensorboard_log="./DDPG_tensorboard/")
 
 # Create the callback: check every 1000 steps

@@ -127,23 +127,13 @@ model = SAC(
         n_sampled_goal=4,
         goal_selection_strategy="future",
     ),
+    learning_rate=linear_schedule(0.001),
     verbose=1,
-    policy_kwargs={"net_arch": [256, 256]},
+    # learning_starts=2000,
     seed=seed,
-    tensorboard_log="./DDPG_tensorboard/"
+    tensorboard_log="./SAC_tensorboard/"
 )
 
-# # Create a DDPG model with the learning rate schedule
-# model = DDPG("MlpPolicy", env,
-#              action_noise=action_noise,
-#              learning_starts=2000,
-#              learning_rate=linear_schedule(0.001),
-#              verbose=1,
-#              seed=seed,
-#              policy_kwargs={"net_arch": [256, 256]},
-#              tensorboard_log="./DDPG_tensorboard/")
-
-# Create the callback: check every 1000 steps
 callback = SaveOnBestTrainingRewardCallback(check_freq=1000, log_dir=log_dir)
 
 # Train the agent

@@ -27,6 +27,7 @@ class UR5eGoalEnv(Env):
 
     def __init__(self, render_mode=None):
         self.observation_space = spaces.Dict({
+            # we concat state and goal, so the observation is 42x2 = 84
             "observation": spaces.Box(low=-np.inf, high=np.inf, shape=(84, 2), dtype=np.float64),
             "achieved_goal": spaces.Box(low=-np.inf, high=np.inf, shape=(42, 2), dtype=np.float64),
             "desired_goal": spaces.Box(low=-np.inf, high=np.inf, shape=(42, 2), dtype=np.float64),
@@ -67,9 +68,11 @@ class UR5eGoalEnv(Env):
         self._gripper2 = AG95()
         self._cable = Cable_test()
 
+        # attach_tool is a method of the Arm class
         self._arm.attach_tool(self._gripper.mjcf_model, pos=[0, 0, 0], quat=[-0.7071068, 0, 0, -0.7071068])
         self._arm2.attach_tool(self._gripper2.mjcf_model, pos=[0, 0, 0], quat=[-0.7071068, 0, 0, -0.7071068])
 
+        # arena is a mjcf model
         self._arena.attach(self._arm.mjcf_model, pos=[0, 0, 0], quat=[0.7071068, 0, 0, -0.7071068])
         self._arena.attach(self._arm2.mjcf_model, pos=[0, 0.5, 0], quat=[0.7071068, 0, 0, -0.7071068])
         self._arena.attach_free(self._cable.mjcf_model, pos=[0.5, 0.2, 0], quat=[0.7071068, 0, 0, -0.7071068])
@@ -105,29 +108,17 @@ class UR5eGoalEnv(Env):
         self._viewer = None
         self._step_start = None
 
-    def _get_obs(self):
-        key_pos = self._cable.get_keypoint_pos(self._physics)
-        end_pos = self._cable.get_end_pos(self._physics)
-        observation = np.concatenate([key_pos, end_pos])
-        target_pos = np.array(self.generate_target_pos(seed=1))
-        achieved_goal = observation[:, 0:2]
-        desired_goal = target_pos[:, ::-1]
-        obs = np.concatenate([observation[:, ::-1], desired_goal])
-        return {
-            'observation': obs[:, ::-1],
-            'achieved_goal': achieved_goal,
-            'desired_goal': desired_goal
-        }
-
     def _get_info(self):
         return {}
 
     def cosine_similarity(self, v1, v2):
+        # v1: (2, ); v2: (2, )
         dot_product = np.dot(v1, v2)
         norm_v1 = np.linalg.norm(v1)
         norm_v2 = np.linalg.norm(v2)
         return dot_product / (norm_v1 * norm_v2)
 
+    # scale action from [-1, 1] to [low, high]
     def scale_action(self, action):
         return self.low + (action + 1) * (self.high - self.low) / 2
 
@@ -136,6 +127,7 @@ class UR5eGoalEnv(Env):
         target_seed = np.random.randint(0, 5)
         self.target_pos = self.generate_target_pos(seed=target_seed)
         with self._physics.reset_context():
+            # 能够保证开始时即抓取成功的机械臂的初始关节角度
             self._physics.bind(self._arm.joints).qpos = [-0.27224167, -1.34584096, 2.09610347, -2.32114048, -1.5668758, -0.27275213]
             self._physics.bind(self._arm2.joints).qpos = [-0.26352847, -1.33615549, 2.10425254, -2.33888988, -1.57079454, -0.26352847]
             self._physics.data.ctrl = np.array([1.0, 1.0])
@@ -148,10 +140,30 @@ class UR5eGoalEnv(Env):
         obs = self._get_obs()
         min_vals = np.array([0, 0.25])
         max_vals = np.array([0.5, 0.75])
+        # Normalize the observation
         obs['observation'] = (obs['observation'] - min_vals) / (max_vals - min_vals)
         obs['observation'] = 2 * obs['observation'] - 1
         info = self._get_info()
         return obs, info
+
+    def _get_obs(self):
+        key_pos = self._cable.get_keypoint_pos(self._physics)
+        end_pos = self._cable.get_end_pos(self._physics)
+        # observation = np.concatenate([key_pos, end_pos])
+        observation = np.concatenate([key_pos, end_pos], axis=0)[:, :-1]
+        achieved_goal = observation[: 42]
+        target_pos = np.array(self.generate_target_pos(seed=1))
+        observation = np.concatenate([observation[:, 0:2], target_pos[:, ::-1]])
+
+        # desired_goal = np.array(np.concatenate([target_pos, target_pos], axis=0))[:, ::-1]
+        desired_goal = target_pos[:, ::-1]
+
+        return {
+            'observation': observation,
+            'achieved_goal': achieved_goal,
+            'desired_goal': desired_goal
+        }
+
 
     def step(self, action):
         time_control_start = time.time()
@@ -159,24 +171,25 @@ class UR5eGoalEnv(Env):
         action_scaled = self.scale_action(action)
         truncated = False
         self.steps += 1
+        
         action1 = action_scaled[0:3]
         action2 = action_scaled[3:6]
+        
         current_pose1 = self._arm.get_eef_pose(self._physics)
         current_pose2 = self._arm2.get_eef_pose(self._physics)
-        target_pose1 = current_pose1
-        target_pose2 = current_pose2
-        target_pose1[0:2] = current_pose1[0:2] + action1[0:2]
-        target_pose2[0:2] = current_pose2[0:2] + action2[0:2]
+        
+        target_pose1 = current_pose1.copy()
+        target_pose2 = current_pose2.copy()
+        
+        target_pose1[0:2] += action1[0:2]
+        target_pose2[0:2] += action2[0:2]
         target_pose1[2] = 0.0
         target_pose2[2] = 0.0
-        target_pose1[3] = 0.0
-        target_pose2[3] = 0.0
-        target_pose1[4] = 0.0
-        target_pose2[4] = 0.0
         target_pose1[5] = current_pose1[5] * np.cos(action1[2]) - current_pose1[6] * np.sin(action1[2])
         target_pose1[6] = current_pose1[5] * np.sin(action1[2]) + current_pose1[6] * np.cos(action1[2])
         target_pose2[5] = current_pose2[5] * np.cos(action2[2]) - current_pose2[6] * np.sin(action2[2])
         target_pose2[6] = current_pose2[5] * np.sin(action2[2]) + current_pose2[6] * np.cos(action2[2])
+        
         self.control_steps = 0
 
         distance = np.linalg.norm(target_pose1[[0, 1]] - target_pose2[[0, 1]])
@@ -209,29 +222,27 @@ class UR5eGoalEnv(Env):
         if self._render_mode == "human":
             self._render_frame()
 
-        observation = self._get_obs()
-        observation1 = observation['observation']
-        achieved_goal = observation['achieved_goal']
-        desired_goal = self.target_pos
-        observation = observation1[0:42]
+        observation_data = self._get_obs()
+        observation = observation_data['observation'][: 42]
+        achieved_goal = observation_data['achieved_goal']
+        desired_goal = observation_data['desired_goal']
 
         current_differences = np.diff(observation, axis=0)
-        target_differences = np.diff(self.target_pos, axis=0)
-        similarities = [self.cosine_similarity(current_differences[i], target_differences[i]) for i in
-                        range(len(current_differences))][0:39]
+        target_differences = np.diff(desired_goal, axis=0)
+        similarities = [self.cosine_similarity(current_differences[i], target_differences[i]) for i in range(len(current_differences))][0:39]
+
         alpha = 0.1
         weights = np.exp(-alpha * np.arange(len(similarities)))
         weights /= np.sum(weights)
         weighted_similarities = np.dot(similarities, weights)
 
         distance_tag = distance < 0.1 or distance > 0.53
-        error_vector = observation - self.target_pos
+        error_vector = observation[:, :2] - desired_goal
         dlo_error = np.sqrt(np.sum(error_vector * error_vector) / self.target_num)
-        warning = np.linalg.norm(
-            current_pose1[[0, 1]] - current_pose2[[0, 1]]) > 0.45
+        warning = np.linalg.norm(current_pose1[[0, 1]] - current_pose2[[0, 1]]) > 0.45
 
-        current_tcp_left = observation[-1]
-        current_tcp_right = observation[-2]
+        current_tcp_left = observation[-1, :2]
+        current_tcp_right = observation[-2, :2]
         if current_tcp_left[0] < -0.1 or current_tcp_left[0] > 0.30 or current_tcp_left[1] < 0.35 or current_tcp_left[1] > 0.75:
             print('left arm out of range.')
             distance_tag = True
@@ -261,19 +272,23 @@ class UR5eGoalEnv(Env):
 
         min_vals = np.array([0, 0.25])
         max_vals = np.array([0.5, 0.75])
-        observation1 = (observation1 - min_vals) / (max_vals - min_vals)
-        scaled_combined_state = 2 * observation1 - 1
+        observation = np.concatenate([observation, desired_goal], axis=0)   
+        observation = (observation - min_vals) / (max_vals - min_vals)
+        scaled_combined_state = 2 * observation - 1
 
         return {
             'observation': scaled_combined_state,
             'achieved_goal': achieved_goal,
             'desired_goal': desired_goal
-        }, reward, done, truncated, info
+        }, float(reward), bool(done), bool(truncated), info
 
     def compute_reward(self, achieved_goal, desired_goal, info):
-        error_vector = achieved_goal - desired_goal
-        dlo_error = np.sqrt(np.sum(error_vector * error_vector) / self.target_num)
-        return -dlo_error
+        # 计算每个 achieved_goal 和 desired_goal 之间的误差
+        print("input shape:", achieved_goal.shape)
+        errors = np.linalg.norm(achieved_goal - desired_goal, axis=-1)
+        print("output shape:", errors.shape)
+        # 返回负的误差作为奖励
+        return -np.array(np.sum(errors, axis=-1))
 
     def compute_terminated(self, achieved_goal, desired_goal, info):
         dlo_error = np.linalg.norm(achieved_goal - desired_goal)
