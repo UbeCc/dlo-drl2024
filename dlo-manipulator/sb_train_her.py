@@ -4,7 +4,7 @@ from typing import Callable
 
 import numpy as np
 import gymnasium
-from stable_baselines3 import DDPG
+from stable_baselines3 import DDPG, SAC, HER, HerReplayBuffer
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.callbacks import BaseCallback
@@ -107,7 +107,7 @@ os.makedirs(log_dir, exist_ok=True)
 seed = 3407
 
 # Create and wrap the environment
-env = gymnasium.make('manipulator_mujoco/UR5eEnv-v0', render_mode="rgb_array")
+env = gymnasium.make('manipulator_mujoco/UR5eGoalEnv', render_mode="rgb_array")
 env = Monitor(env, log_dir)
 
 # Set global seed
@@ -118,15 +118,30 @@ n_actions = env.action_space.shape[-1]
 action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.3 * np.ones(n_actions))
 
 
-# Create a DDPG model with the learning rate schedule
-model = DDPG("MlpPolicy", env,
-             action_noise=action_noise,
-             learning_starts=2000,
-             learning_rate=linear_schedule(0.001),
-             verbose=1,
-             seed=seed,
-             policy_kwargs={"net_arch": [256, 256]},
-             tensorboard_log="./DDPG_tensorboard/")
+model = SAC(
+    "MultiInputPolicy",
+    env,
+    replay_buffer_class=HerReplayBuffer,
+    # Parameters for HER
+    replay_buffer_kwargs=dict(
+        n_sampled_goal=4,
+        goal_selection_strategy="future",
+    ),
+    verbose=1,
+    policy_kwargs={"net_arch": [256, 256]},
+    seed=seed,
+    tensorboard_log="./DDPG_tensorboard/"
+)
+
+# # Create a DDPG model with the learning rate schedule
+# model = DDPG("MlpPolicy", env,
+#              action_noise=action_noise,
+#              learning_starts=2000,
+#              learning_rate=linear_schedule(0.001),
+#              verbose=1,
+#              seed=seed,
+#              policy_kwargs={"net_arch": [256, 256]},
+#              tensorboard_log="./DDPG_tensorboard/")
 
 # Create the callback: check every 1000 steps
 callback = SaveOnBestTrainingRewardCallback(check_freq=1000, log_dir=log_dir)
