@@ -107,7 +107,8 @@ os.makedirs(log_dir, exist_ok=True)
 seed = 3407
 
 # Create and wrap the environment
-env = gymnasium.make('manipulator_mujoco/UR5eGoalEnv', render_mode="rgb_array")
+# env = gymnasium.make('manipulator_mujoco/UR5eGoalEnv', render_mode="rgb_array")
+env = gymnasium.make('manipulator_mujoco/UR5eGoalEnv', render_mode="human")
 env = Monitor(env, log_dir)
 
 # Set global seed

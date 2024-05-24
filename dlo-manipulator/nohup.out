@@ -1,0 +1,32 @@
+Using cpu device
+Wrapping the env in a DummyVecEnv.
+Traceback (most recent call last):
+  File "/Users/ubec/workspace/drl/dlo-drl2024/dlo-manipulator/sb_train_her.py", line 143, in <module>
+    model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name="run_goalenv", log_interval=1)
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/stable_baselines3/sac/sac.py", line 307, in learn
+    return super().learn(
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/stable_baselines3/common/off_policy_algorithm.py", line 314, in learn
+    total_timesteps, callback = self._setup_learn(
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/stable_baselines3/common/off_policy_algorithm.py", line 297, in _setup_learn
+    return super()._setup_learn(
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/stable_baselines3/common/base_class.py", line 423, in _setup_learn
+    self._last_obs = self.env.reset()  # type: ignore[assignment]
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/stable_baselines3/common/vec_env/dummy_vec_env.py", line 77, in reset
+    obs, self.reset_infos[env_idx] = self.envs[env_idx].reset(seed=self._seeds[env_idx], **maybe_options)
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/stable_baselines3/common/monitor.py", line 83, in reset
+    return self.env.reset(**kwargs)
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/gymnasium/wrappers/order_enforcing.py", line 61, in reset
+    return self.env.reset(**kwargs)
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/gymnasium/wrappers/env_checker.py", line 57, in reset
+    return env_reset_passive_checker(self.env, **kwargs)
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/gymnasium/utils/passive_env_checker.py", line 186, in env_reset_passive_checker
+    result = env.reset(**kwargs)
+  File "/Users/ubec/workspace/drl/dlo-drl2024/dlo-manipulator/manipulator_mujoco/envs/ur5e_goalenv.py", line 138, in reset
+    self.step([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+  File "/Users/ubec/workspace/drl/dlo-drl2024/dlo-manipulator/manipulator_mujoco/envs/ur5e_goalenv.py", line 215, in step
+    self._render_frame()
+  File "/Users/ubec/workspace/drl/dlo-drl2024/dlo-manipulator/manipulator_mujoco/envs/ur5e_goalenv.py", line 317, in _render_frame
+    self._viewer = mujoco.viewer.launch_passive(
+  File "/opt/homebrew/anaconda3/envs/DRL/lib/python3.10/site-packages/mujoco/viewer.py", line 467, in launch_passive
+    raise RuntimeError(
+RuntimeError: `launch_passive` requires that the Python script be run under `mjpython` on macOS
