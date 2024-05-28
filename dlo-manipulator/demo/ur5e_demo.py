@@ -2,7 +2,7 @@ import gymnasium
 import manipulator_mujoco
 
 # Create the environment with rendering in human mode
-env = gymnasium.make('manipulator_mujoco/UR5eEnv-v0', render_mode='human')
+env = gymnasium.make('manipulator_mujoco/UR5eEnv-v3', render_mode='human')
 
 # Reset the environment with a specific seed for reproducibility
 observation, info = env.reset(seed=42)

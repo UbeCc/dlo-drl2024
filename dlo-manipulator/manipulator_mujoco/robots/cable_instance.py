@@ -12,6 +12,11 @@ _cable_test_XML = os.path.join(
     os.path.dirname(__file__),
     '../assets/objects/cable.xml',
 )
+_cable_test_XML2 = os.path.join(
+    os.path.dirname(__file__),
+    '../assets/objects/cable3d.xml',
+)
+
 
 # _JOINT = 'left_outer_knuckle_joint'
 #
@@ -21,3 +26,8 @@ _cable_test_XML = os.path.join(
 class Cable_test(Cable):
     def __init__(self, name: str = None):
         super().__init__(_cable_test_XML, name)
+
+
+class Cable_3d(Cable):
+    def __init__(self, name: str = None):
+        super().__init__(_cable_test_XML2, name)

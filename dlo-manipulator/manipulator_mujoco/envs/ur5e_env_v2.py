@@ -133,7 +133,8 @@ class UR5eEnv_v2(gym.Env):
         key_pos = self._cable.get_keypoint_pos(self._physics)
         end_pos = self._cable.get_end_pos(self._physics)
         observation = np.concatenate([key_pos, end_pos])
-        target_pos = np.array(self.generate_target_pos(seed=1))
+        # target_pos = np.array(self.generate_target_pos(seed=1))
+        target_pos = np.array(self.target_pos)
         observation = np.concatenate([observation[:, 0:2], target_pos[:, ::-1]])
         return observation[:, ::-1]
 

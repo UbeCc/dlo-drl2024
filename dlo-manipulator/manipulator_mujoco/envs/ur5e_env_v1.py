@@ -29,6 +29,7 @@ class UR5eEnv_v1(gym.Env):
 
     def seed(self, seed):
         np.random.seed(seed)
+
     def __init__(self, render_mode=None):
         self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(84, 2), dtype=np.float64)
         self.action_space = spaces.Box(low=-1, high=1, shape=(6,), dtype=np.float64)
@@ -133,7 +134,8 @@ class UR5eEnv_v1(gym.Env):
         key_pos = self._cable.get_keypoint_pos(self._physics)
         end_pos = self._cable.get_end_pos(self._physics)
         observation = np.concatenate([key_pos, end_pos])
-        target_pos = np.array(self.generate_target_pos(seed=1))
+        # target_pos = np.array(self.generate_target_pos(seed=1))
+        target_pos = np.array(self.target_pos)
         observation = np.concatenate([observation[:, 0:2], target_pos[:, ::-1]])
         return observation[:, ::-1]
 
@@ -324,8 +326,8 @@ class UR5eEnv_v1(gym.Env):
         done_4 = dlo_error < 0.02
         done_5 = dlo_error < 0.015
         done = dlo_error < 0.01
-        reward = - 5 * dlo_error + 0.15 * weighted_similarities - 20 * distance_tag - 1 * warning \
-                 + 1000 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 + 8 * done_4 + 10 * done_5
+        reward = - 5 * dlo_error + 0.3 * weighted_similarities - 50 * distance_tag - 1 * warning \
+                 + 5000 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 + 8 * done_4 + 10 * done_5 - 0.01 * self.steps
         if done:
             print('task done.')
         print("dlo_error:", dlo_error)
@@ -340,7 +342,7 @@ class UR5eEnv_v1(gym.Env):
         # print("time_cost:", time.time() - time_control_start)
         return scaled_combined_state, reward, done, truncated, info
 
-    def calculate_reward(self, dlo_error, weighted_similarities, distance_tag, warning,done):
+    def calculate_reward(self, dlo_error, weighted_similarities, distance_tag, warning, done):
         # 平滑的误差奖励
         smooth_error_reward = -5 * dlo_error
 
@@ -360,6 +362,7 @@ class UR5eEnv_v1(gym.Env):
         # 总奖励
         reward = smooth_error_reward + smooth_similarity_reward + penalty_distance + penalty_warning + smooth_done_reward + 100 * done
         return reward
+
     # 执行最初的抓取动作
     def init_grasp(self) -> None:
         # 将机械臂移动到初始抓取位置

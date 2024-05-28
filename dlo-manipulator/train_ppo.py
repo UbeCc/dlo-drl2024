@@ -154,14 +154,14 @@ if __name__ == "__main__":
     parser.add_argument("--experiment_name", type=str, required=True, help="Name of the experiment")
     parser.add_argument("--schedule", type=str, help="Learning rate schedule: 'linear', 'exp' or 'cos'", default="linear")
     parser.add_argument("--device", type=str, default="0", help="CUDA device number, e.g., '0' for /gpu:0")
-    parser.add_argument("--env", type=str, default='UR5eEnv-v0', help="Environment ID")
+    parser.add_argument("--env", type=str, default='UR5eEnv-v1', help="Environment ID")
     parser.add_argument("--render_mode", type=str, default='rgb_array', help="Render mode for the environment")
     parser.add_argument("--learning_rate", type=float, default=0.0005, help="Initial learning rate for cos, linear is 0.001")
     parser.add_argument("--decay_factor", type=float, default=0.99, help="Decay factor for exp")
     parser.add_argument("--decay_steps", type=int, default=10000, help="Decay steps for exp")
     parser.add_argument("--seed", type=int, default=3407, help="Random seed")
     parser.add_argument("--log_dir", type=str, default='./logs_ppo/', help="Directory for logging")
-    parser.add_argument("--timesteps", type=int, default=200000, help="Total training timesteps")
+    parser.add_argument("--timesteps", type=int, default=500000, help="Total training timesteps")
     parser.add_argument("--check_freq", type=int, default=1000, help="Frequency of checks for best model")
     args = parser.parse_args()
 
@@ -205,8 +205,13 @@ if __name__ == "__main__":
     model = PPO("MlpPolicy", env,
                  # learning_rate=lr_schedule,  # Set the learning rate schedule
                  verbose=1,
+                 n_steps=1536,
+                learning_rate=0.002,
+                batch_size=128,
+                max_grad_norm=1,
+                clip_range=0.2,
                  seed=seed,
-                 policy_kwargs={"net_arch": [256, 256]},
+                 policy_kwargs={"net_arch": [512, 512]},
                  tensorboard_log="./PPO_tensorboard/")
 
     # Create the callback: check every 1000 steps
