@@ -38,6 +38,8 @@ class UR5eEnv_v5_test(gym.Env):
         self.target_num = 42
         self.target_pos = np.ndarray
         self.target_seed_data = json.load(open('cable_target_seed.json', 'r'))
+        self.target_seed = 0
+        self.num_targets = 5
         self.generate_target_pos_test()
         
         self.steps = 0
@@ -131,8 +133,7 @@ class UR5eEnv_v5_test(gym.Env):
         self._viewer = None
         self._step_start = None
         
-        self.target_seed = 0
-        self.num_targets = 5
+        
 
     def _get_obs(self) -> np.ndarray:
         # TODO come up with an observations that makes sense for your RL task
