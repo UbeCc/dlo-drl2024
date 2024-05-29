@@ -73,7 +73,7 @@ where $ d_i $ is the Euclidean distance between the $i$-th pair of actual and ta
 - To increase the operational space, collisions between the UR5e arms themselves are disabled, but collisions between grippers, gripping blocks, and the DLOs are retained.
 
 
-## Result Summary
+## Result Summary (Single Target)
 
 ### TD3
 Run `TD3`
@@ -161,6 +161,18 @@ Result:
 <div align="center">
     <img src="images/ddpg_res.png" alt="res_td3" width="49%">
 </div>
+
+
+
+## Result Summary (Multiple Target)
+
+### SAC
+
+### SAC with Curriculum
+
+### TD3
+
+### TD3 with Curriculum
 
 
 # UR5e Reinforcement Learning Environment

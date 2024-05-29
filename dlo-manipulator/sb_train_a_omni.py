@@ -267,6 +267,15 @@ if __name__ == "__main__":
     # Create the callback: check every 1000 steps
     callback = SaveOnBestTrainingRewardCallback(check_freq=args.check_freq, log_dir=log_dir)
 
+    ### for curric ###
+    model = RLAlgo.load("/home/xueyi/diffsim/dlo-drl2024/dlo-manipulator/logs_SAC/test_sac_curri_1_2024-05-29-02-33-58_seed3407_noisesigma0.3_lr0.0005_envv5_net256_256/best_model.zip")
+    
+    model.set_env(env)
+    # model.learning_rate = lr_schedule
+    # model.tensorboard_log = f"./{args.algo_name}_tensorboard/"
+    # model.verbose = 1
+    
+    
     # Train the agent
     model.learn(total_timesteps=int(timesteps), callback=callback, tb_log_name=f"{args.experiment_name}_{time_stamp}", log_interval=1)
 
@@ -286,5 +295,21 @@ if __name__ == "__main__":
     # cuda visible devicies # # 
     # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v2
     # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v1 ## add the log files ##
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v4 
+    #  CUDA_VISIBLE_DEVICES=2  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
+    #  CUDA_VISIBLE_DEVICES=3  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_curri_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
+    #  CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
+    # CUDA_VISIBLE_DEVICES=0 python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac_multi_tar --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
+    
+    
+    # 
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac_curri_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
+    # 
+    # 
+    
+    ## get the test set ##  ## at the test 
+    # with curriculum 77xx ->  8936.2552556 +/- 5920.160185578027 #
+    # 9256.275604861974 +/- 6154.629768754603 --- eval
+    # 9576.816347247363 +/- 4988.734417491997 -- eval (SAC)
     # logs_TD3/test_2024-05-20-19-02-49_seed3407_noisesigma0.3_lr0.0005_envv1/best_model 
 

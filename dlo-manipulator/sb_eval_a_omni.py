@@ -277,3 +277,8 @@ if __name__ == "__main__":
     # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./sac_logs_decay" --render_mode=human
     # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=TD3 --log_dir="./logs_TD3/test_2024-05-20-19-05-15_seed3407_noisesigma0.3_lr0.0005_envv2" --render_mode=human --env=UR5eEnv-v2
     # CUDA_VISIBLE_DEVICES=1  python sb_eval_a_omni.py --algo_name=TD3 --log_dir="./logs_TD3/test_2024-05-22-05-39-01_seed3407_noisesigma0.3_lr0.0005_envv2_net256_256" --render_mode=human --env=UR5eEnv-v2
+    # CUDA_VISIBLE_DEVICES=1  python sb_eval_a_omni.py --algo_name=TD3 --log_dir="./logs_TD3/test_2024-05-22-15-26-19_seed3407_noisesigma0.3_lr0.0005_envv1_net256_256" --render_mode=human --env=UR5eEnv-v1
+    # CUDA_VISIBLE_DEVICES=0  python sb_eval_a_omni.py --algo_name=TD3 --log_dir="./logs_TD3/test_curri_2024-05-28-11-16-23_seed3407_noisesigma0.3_lr0.0005_envv5_net256_256" --render_mode=human --env=UR5eEnv-v5
+    # CUDA_VISIBLE_DEVICES=0  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_sac_2024-05-28-17-40-06_seed3407_noisesigma0.3_lr0.0005_envv5_net256_256" --render_mode=human --env=UR5eEnv-v5 
+    # 
+    # CUDA_VISIBLE_DEVICES=2  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_sac_multi_tar_2024-05-29-02-47-10_seed3407_noisesigma0.3_lr0.0005_envv6_net256_256" --render_mode=human --env=UR5eEnv-v6
