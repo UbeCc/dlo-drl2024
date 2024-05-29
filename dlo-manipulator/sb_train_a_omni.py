@@ -268,9 +268,9 @@ if __name__ == "__main__":
     callback = SaveOnBestTrainingRewardCallback(check_freq=args.check_freq, log_dir=log_dir)
 
     # ### for curric ###
-    model = RLAlgo.load("/root/diffsim/dlo-drl2024/dlo-manipulator/logs_TD3/best_model.zip")
+    # model = RLAlgo.load("/root/diffsim/dlo-drl2024/dlo-manipulator/logs_TD3/best_model.zip")
     
-    model.set_env(env)
+    # model.set_env(env)
     # model.learning_rate = lr_schedule
     # model.tensorboard_log = f"./{args.algo_name}_tensorboard/"
     # model.verbose = 1
@@ -303,7 +303,7 @@ if __name__ == "__main__":
     
     
     # 
-    # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac_curri_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
+    # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_multi_tar_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6 
     # 
     # 
     
