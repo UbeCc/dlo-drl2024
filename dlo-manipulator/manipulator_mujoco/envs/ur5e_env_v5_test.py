@@ -447,6 +447,10 @@ class UR5eEnv_v5_test(gym.Env):
                 other_idx = 0
             cur_data = self.target_seed_data['seed' + str(idx)]
             other_data = self.target_seed_data['seed' + str(other_idx)]
+            
+            cur_data = np.array(cur_data).astype(np.float32)
+            other_data = np.array(other_data).astype(np.float32)
+            
             interpolate_factor = 0.9
             interpolated_data = interpolate_factor * cur_data + (1.0 - interpolate_factor) * other_data
             target_seed_data_test['seed' + str(idx)] = interpolated_data   

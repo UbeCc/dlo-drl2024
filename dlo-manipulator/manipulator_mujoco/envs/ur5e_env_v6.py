@@ -37,9 +37,24 @@ class UR5eEnv_v6(gym.Env):
         self.high = np.array([0.02, 0.02, 0.1, 0.02, 0.02, 0.1], dtype=np.float32)
         self.target_num = 42
         self.target_pos = np.ndarray
+        ## TODO: get closest target_seed_data from ori_target_seed_data ##
         # self.target_seed_data = json.load(open('cable_target_seed.json', 'r'))
+        # self.target_seed_data, self.ori_target_seed_data #
+        # self.tot_nn_targets = 120
+        # self.tot_nn_ori_targets = 5
         self.target_seed_data = json.load(open('augmented_cable_target_seed.json', 'r'))
+        self.ori_target_seed_data = json.load(open('cable_target_seed.json', 'r')) 
+        
+        
+        
         self.tot_nn_targets = 120
+        self.tot_nn_ori_targets = 5
+        
+        
+        #### Filter for the nearest target data ####
+        self.get_closest_target_data_from_ori_target_data() #### 
+        
+        #
         self.steps = 0
         self.control_steps = 0
         self.control_frequency = 15
@@ -130,6 +145,42 @@ class UR5eEnv_v6(gym.Env):
         self._timestep = self._physics.model.opt.timestep  # 这个还挺重要的
         self._viewer = None
         self._step_start = None
+        
+        self.target_seed =0
+        
+        
+    def get_closest_target_data_from_ori_target_data(self, ):
+        
+        # self.target_seed_data, self.ori_target_seed_data #
+        # self.tot_nn_targets = 120
+        # self.tot_nn_ori_targets = 5
+        tot_ori_target_data_np = []
+        for idx in range(0, self.tot_nn_ori_targets):
+            cur_target_data = self.ori_target_seed_data['seed' + str(idx)]
+            cur_target_data = np.array(cur_target_data).astype(np.float32)
+            
+            tot_ori_target_data_np.append(cur_target_data)
+        tot_ori_target_data_np = np.stack(tot_ori_target_data_np, axis=0) ## get the ori target data np ##
+    
+        idx_to_err = {}
+        for idx in range(0, self.tot_nn_targets):
+            cur_target_data = self.target_seed_data['seed' + str(idx)]
+            cur_target_data = np.array(cur_target_data).astype(np.float32)
+            diff_cur_target_data_w_ori_target_datas = tot_ori_target_data_np - cur_target_data[None]
+            diff_cur_target_data_w_ori_target_datas = np.sum(diff_cur_target_data_w_ori_target_datas ** 2, axis=-1) ## nn_ori_targets
+            diff_err = np.min(diff_cur_target_data_w_ori_target_datas).item()
+            idx_to_err[idx] = diff_err
+        sorted_idx_err_items = sorted(idx_to_err.items(), key=lambda x: x[1])
+        
+        clamped_sorted_idx_err_items = sorted_idx_err_items[:self.tot_nn_ori_targets * 10]
+        idx_to_target_pos = {}
+        for idx in range(len(clamped_sorted_idx_err_items)):
+            cur_idx = clamped_sorted_idx_err_items[idx][0]
+            cur_target_data = self.target_seed_data['seed' + str(cur_idx)]
+            # cur_target_data = np.array(cur_target_data).astype(np.float32)
+            idx_to_target_pos['seed' + str(idx)] = cur_target_data
+        self.target_seed_data = idx_to_target_pos
+        
 
     def _get_obs(self) -> np.ndarray:
         # TODO come up with an observations that makes sense for your RL task
@@ -161,8 +212,16 @@ class UR5eEnv_v6(gym.Env):
         super().reset(seed=seed)
         # 从0-4中随机选择一个target_seed
         # target_seed = np.random.randint(0, 5)
-        target_seed = np.random.randint(0, self.tot_nn_targets)
+        
+        
+        # target_seed = np.random.randint(0, self.tot_nn_targets)
+        
+        target_seed = self.target_seed 
         self.target_pos = self.generate_target_pos(seed=target_seed)
+        
+        # target_seed = 
+        self.target_seed = (self.target_seed + 1) % self.tot_nn_targets
+        
         # reset physics
         with self._physics.reset_context():
             # 能够保证开始时即抓取成功的机械臂的初始关节角度
