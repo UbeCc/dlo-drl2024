@@ -21,7 +21,7 @@ from manipulator_mujoco.props import Primitive
 import json
 
 
-class UR5eEnv_v5(gym.Env):
+class UR5eEnv_v5_test(gym.Env):
     metadata = {
         "render_modes": ["human", "rgb_array"],
         "render_fps": None,
@@ -38,6 +38,8 @@ class UR5eEnv_v5(gym.Env):
         self.target_num = 42
         self.target_pos = np.ndarray
         self.target_seed_data = json.load(open('cable_target_seed.json', 'r'))
+        self.generate_target_pos_test()
+        
         self.steps = 0
         self.control_steps = 0
         self.control_frequency = 15
@@ -161,8 +163,11 @@ class UR5eEnv_v5(gym.Env):
     def reset(self, seed=None, options=None) -> tuple:
         super().reset(seed=seed)
         # 从0-4中随机选择一个target_seed
-        target_seed = np.random.randint(0, 5)
+        # target_seed = np.random.randint(0, 5)
+        target_seed = self.target_seed
         self.target_pos = self.generate_target_pos(seed=target_seed)
+        # target seed #
+        self.target_seed = (self.target_seed + 1) % (self.num_targets) # increase the target seed #
         # reset physics
         with self._physics.reset_context():
             # 能够保证开始时即抓取成功的机械臂的初始关节角度
@@ -430,6 +435,22 @@ class UR5eEnv_v5(gym.Env):
             current_pose2 = self._arm2.get_eef_pose(self._physics)
             self.step(np.stack([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]))
         print("robot has grasped the object.")
+
+
+    def generate_target_pos_test(self,) -> None:
+        # target_seed_data
+        target_seed_data_test = {}
+        for idx in range(0, self.num_targets):
+            if idx < self.num_targets - 1:
+                other_idx = idx + 1
+            else:
+                other_idx = 0
+            cur_data = self.target_seed_data['seed' + str(idx)]
+            other_data = self.target_seed_data['seed' + str(other_idx)]
+            interpolate_factor = 0.9
+            interpolated_data = interpolate_factor * cur_data + (1.0 - interpolate_factor) * other_data
+            target_seed_data_test['seed' + str(idx)] = interpolated_data   
+        self.target_seed_data = target_seed_data_test
 
     def generate_target_pos(self, seed) -> np.ndarray:
         # 读取json文件，获得一个字典

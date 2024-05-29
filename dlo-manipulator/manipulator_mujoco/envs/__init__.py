@@ -7,3 +7,4 @@ from manipulator_mujoco.envs.ur5e_env_v4 import UR5eEnv_v4
 from manipulator_mujoco.envs.ur5e_env_v5 import UR5eEnv_v5
 # from manipulator_mujoco.envs.ur5e_env_v4 import UR5eEnv_v4
 from manipulator_mujoco.envs.ur5e_env_v6 import UR5eEnv_v6
+from manipulator_mujoco.envs.ur5e_env_v5_test import UR5eEnv_v5_test

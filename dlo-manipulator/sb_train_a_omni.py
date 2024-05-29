@@ -267,8 +267,8 @@ if __name__ == "__main__":
     # Create the callback: check every 1000 steps
     callback = SaveOnBestTrainingRewardCallback(check_freq=args.check_freq, log_dir=log_dir)
 
-    ### for curric ###
-    model = RLAlgo.load("/home/xueyi/diffsim/dlo-drl2024/dlo-manipulator/logs_SAC/test_sac_curri_1_2024-05-29-02-33-58_seed3407_noisesigma0.3_lr0.0005_envv5_net256_256/best_model.zip")
+    # ### for curric ###
+    model = RLAlgo.load("/root/diffsim/dlo-drl2024/dlo-manipulator/logs_TD3/best_model.zip")
     
     model.set_env(env)
     # model.learning_rate = lr_schedule
@@ -303,7 +303,7 @@ if __name__ == "__main__":
     
     
     # 
-    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac_curri_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
+    # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac_curri_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
     # 
     # 
     
