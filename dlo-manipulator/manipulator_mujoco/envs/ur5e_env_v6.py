@@ -54,6 +54,8 @@ class UR5eEnv_v6(gym.Env):
         #### Filter for the nearest target data ####
         self.get_closest_target_data_from_ori_target_data() #### 
         
+        self.tot_nn_targets = self.tot_nn_ori_targets * 10
+        
         #
         self.steps = 0
         self.control_steps = 0
