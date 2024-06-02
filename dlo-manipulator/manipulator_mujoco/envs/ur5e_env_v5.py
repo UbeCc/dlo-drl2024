@@ -362,11 +362,12 @@ class UR5eEnv_v5(gym.Env):
         done_5 = dlo_error < 0.015
         done = dlo_error < 0.01
         
-        ##### version-full of the error computing ######
-        reward = - 5 * dlo_error + 0.15 * weighted_similarities - 20 * distance_tag - 1 * warning \
-                 + 1000 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 + 8 * done_4 + 10 * done_5
+        # ##### version-full of the error computing ######
+        # reward = - 5 * dlo_error + 0.15 * weighted_similarities - 20 * distance_tag - 1 * warning \
+        #          + 1000 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 + 8 * done_4 + 10 * done_5
         # 
-        # reward = - 5 * dlo_left_rgt_err + 0.15 * weighted_similarities_end 
+        ##### version-1 of the error computing #####
+        reward = - 5 * dlo_left_rgt_err + 0.15 * weighted_similarities_end 
 
         if done:
             print('task done.')
