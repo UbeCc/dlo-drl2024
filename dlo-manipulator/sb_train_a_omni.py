@@ -301,13 +301,17 @@ if __name__ == "__main__":
     #  CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
     # CUDA_VISIBLE_DEVICES=0 python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac_multi_tar --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
     
+    # CUDA_VISIBLE_DEVICES=0 python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_sac_single_tar_seed0_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
     
     # 
     # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_multi_tar_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6 
-    # 
+    # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_multi_tar_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6 
+    # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_four_targets_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    # CUDA_VISIBLE_DEVICES=5  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_forty_targets_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
     # 
     
-    ## get the test set ##  ## at the test 
+    
+    ## get the test set ##
     # with curriculum 77xx ->  8936.2552556 +/- 5920.160185578027 #
     # 9256.275604861974 +/- 6154.629768754603 --- eval
     # 9576.816347247363 +/- 4988.734417491997 -- eval (SAC)

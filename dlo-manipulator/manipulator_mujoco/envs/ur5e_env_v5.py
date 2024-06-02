@@ -37,7 +37,13 @@ class UR5eEnv_v5(gym.Env):
         self.high = np.array([0.02, 0.02, 0.1, 0.02, 0.02, 0.1], dtype=np.float32)
         self.target_num = 42
         self.target_pos = np.ndarray
-        self.target_seed_data = json.load(open('cable_target_seed.json', 'r'))
+        # self.target_seed_data = json.load(open('cable_target_seed.json', 'r'))
+        self.target_seed_data = json.load(open('cable_target_seed_filtered.json', 'r'))
+        
+        self.target_seed = 0
+        # self.num_targets = 5
+        self.num_targets = 4
+        
         self.steps = 0
         self.control_steps = 0
         self.control_frequency = 15
@@ -129,8 +135,7 @@ class UR5eEnv_v5(gym.Env):
         self._viewer = None
         self._step_start = None
         
-        self.target_seed = 0
-        self.num_targets = 5
+        
 
     def _get_obs(self) -> np.ndarray:
         # TODO come up with an observations that makes sense for your RL task
@@ -161,8 +166,16 @@ class UR5eEnv_v5(gym.Env):
     def reset(self, seed=None, options=None) -> tuple:
         super().reset(seed=seed)
         # 从0-4中随机选择一个target_seed
-        target_seed = np.random.randint(0, 5)
+        # target_seed = np.random.randint(0, 5)
+        
+        target_seed = self.target_seed
+        
+        target_seed = 0 ## 
         self.target_pos = self.generate_target_pos(seed=target_seed)
+        
+    
+        self.target_seed = (self.target_seed  + 1) % self.num_targets
+        
         # reset physics
         with self._physics.reset_context():
             # 能够保证开始时即抓取成功的机械臂的初始关节角度

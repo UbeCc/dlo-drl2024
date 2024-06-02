@@ -43,12 +43,17 @@ class UR5eEnv_v6(gym.Env):
         # self.tot_nn_targets = 120
         # self.tot_nn_ori_targets = 5
         self.target_seed_data = json.load(open('augmented_cable_target_seed.json', 'r'))
-        self.ori_target_seed_data = json.load(open('cable_target_seed.json', 'r')) 
+        # self.ori_target_seed_data = json.load(open('cable_target_seed.json', 'r')) 
+        
+        self.ori_target_seed_data = json.load(open('cable_target_seed_filtered.json', 'r'))
+        self.target_seed = 0
+        # self.num_targets = 5
+        # self.num_targets = 4
         
         
         
         self.tot_nn_targets = 120
-        self.tot_nn_ori_targets = 5
+        self.tot_nn_ori_targets = 4
         
         
         #### Filter for the nearest target data ####
