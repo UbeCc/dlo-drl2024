@@ -267,10 +267,12 @@ if __name__ == "__main__":
     # Create the callback: check every 1000 steps
     callback = SaveOnBestTrainingRewardCallback(check_freq=args.check_freq, log_dir=log_dir)
 
-    # ### for curric ###
-    # model = RLAlgo.load("/root/diffsim/dlo-drl2024/dlo-manipulator/logs_TD3/best_model.zip")
+    # # ### for curric ###
+    model = RLAlgo.load("/home/xueyi/diffsim/dlo-drl2024/dlo-manipulator/logs_SAC/test_forty_targets_curri_1_new__2024-06-02-19-14-52_seed3407_noisesigma0.3_lr0.0005_envv6_net256_256/best_model.zip")
     
-    # model.set_env(env)
+    model.set_env(env)
+    # # ### for curric ###
+    
     # model.learning_rate = lr_schedule
     # model.tensorboard_log = f"./{args.algo_name}_tensorboard/"
     # model.verbose = 1
@@ -308,6 +310,20 @@ if __name__ == "__main__":
     # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_multi_tar_2 --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6 
     # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_four_targets_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
     # CUDA_VISIBLE_DEVICES=5  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_forty_targets_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
+    
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_four_targets_curri_2_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_four_targets_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_four_targets_curri_1_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    
+    # CUDA_VISIBLE_DEVICES=2  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_forty_targets_curri_1_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_four_targets_curri_2_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    
+    # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_forty_targets_curri_2_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
+    
+    # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_four_targets_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    
+    # CUDA_VISIBLE_DEVICES=5  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_forty_targets_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
     
     # CUDA_VISIBLE_DEVICES=3  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_four_targets_curri_1_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
     

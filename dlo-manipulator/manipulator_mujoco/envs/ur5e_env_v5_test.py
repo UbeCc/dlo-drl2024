@@ -43,6 +43,8 @@ class UR5eEnv_v5_test(gym.Env):
         # self.num_targets = 5
         self.num_targets = 4
         
+        self.interpolate_factor = 0.9
+        
         self.generate_target_pos_test()
         
         self.steps = 0
@@ -455,7 +457,7 @@ class UR5eEnv_v5_test(gym.Env):
             cur_data = np.array(cur_data).astype(np.float32)
             other_data = np.array(other_data).astype(np.float32)
             
-            interpolate_factor = 1.0 # 0.9 #  0.7
+            interpolate_factor = self.interpolate_factor # 1.0 # 0.9 #  0.7
             interpolated_data = interpolate_factor * cur_data + (1.0 - interpolate_factor) * other_data
             target_seed_data_test['seed' + str(idx)] = interpolated_data   
         self.target_seed_data = target_seed_data_test
@@ -489,6 +491,12 @@ class UR5eEnv_v5_test(gym.Env):
                 self._physics.model.ptr,
                 self._physics.data.ptr,
             )
+        
+            self._viewer.cam.lookat[:]=[0.15, 0.25, 0.2]
+            self._viewer.cam.distance = 1.75
+            self._viewer.cam.elevation = -20
+            self._viewer.cam.azimuth = 180
+        
         if self._step_start is None and self._render_mode == "human":
             # initialize step timer
             self._step_start = time.time()

@@ -36,7 +36,7 @@ class StandardArena(object):
         self._mjcf_model.worldbody.body['floor'].add("geom", type="plane", condim="1", size=[2, 2, 0.1], material=grid) # condim=1 Frictionless contact
         for x in [-2, 2]:
             # TODO randomize lighting?
-            self._mjcf_model.worldbody.add("light", pos=[x, -1, 3], dir=[-x, 1, -2])
+            self._mjcf_model.worldbody.add("light", pos=[x, -1, 3], dir=[-x, 1, -2], castshadow="false")
         self._mjcf_model.contact.add("exclude", body1="ur5e/dh_ag95_gripper/right_finger", body2="floor")
         self._mjcf_model.contact.add("exclude", body1="ur5e/dh_ag95_gripper/left_finger", body2="floor")
         self._mjcf_model.contact.add("exclude", body1="ur5e_1/dh_ag95_gripper/right_finger", body2="floor")

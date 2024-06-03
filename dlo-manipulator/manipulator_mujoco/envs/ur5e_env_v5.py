@@ -170,7 +170,7 @@ class UR5eEnv_v5(gym.Env):
         
         target_seed = self.target_seed
         
-        target_seed = 0 ## 
+        # target_seed = 0 ## 
         self.target_pos = self.generate_target_pos(seed=target_seed)
         
     
@@ -363,11 +363,11 @@ class UR5eEnv_v5(gym.Env):
         done = dlo_error < 0.01
         
         # ##### version-full of the error computing ######
-        # reward = - 5 * dlo_error + 0.15 * weighted_similarities - 20 * distance_tag - 1 * warning \
-        #          + 1000 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 + 8 * done_4 + 10 * done_5
+        reward = - 5 * dlo_error + 0.15 * weighted_similarities - 20 * distance_tag - 1 * warning \
+                 + 1000 * done + 2 * done_1 + 4 * done_2 + 6 * done_3 + 8 * done_4 + 10 * done_5
         # 
         ##### version-1 of the error computing #####
-        reward = - 5 * dlo_left_rgt_err + 0.15 * weighted_similarities_end 
+        # reward = - 5 * dlo_left_rgt_err + 0.15 * weighted_similarities_end 
 
         if done:
             print('task done.')
