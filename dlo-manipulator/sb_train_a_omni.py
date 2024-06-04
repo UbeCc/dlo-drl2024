@@ -321,9 +321,9 @@ if __name__ == "__main__":
     
     # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_forty_targets_curri_2_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
     
-    # CUDA_VISIBLE_DEVICES=3  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_single_seed_1_tr_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    # CUDA_VISIBLE_DEVICES=0  python sb_train_a_omni.py --algo_name=SAC --experiment_name=test_single_seed_3_tr_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
     
-    # CUDA_VISIBLE_DEVICES=4  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_single_seed_1_tr_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
+    # CUDA_VISIBLE_DEVICES=3  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_single_seed_3_tr_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5 
     
     # CUDA_VISIBLE_DEVICES=1  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_forty_targets_curri_2_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
     
@@ -331,7 +331,7 @@ if __name__ == "__main__":
     
     # CUDA_VISIBLE_DEVICES=5  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_forty_targets_new_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v6
     
-    # CUDA_VISIBLE_DEVICES=3  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_four_targets_curri_1_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
+    # CUDA_VISIBLE_DEVICES=3  python sb_train_a_omni.py --algo_name=TD3 --experiment_name=test_four_targets_curri_2_ --action_noise_sigma=0.3 --learning_rate=0.0005 --env=UR5eEnv-v5
     
     
     

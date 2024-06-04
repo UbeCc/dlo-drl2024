@@ -526,6 +526,12 @@ class UR5eEnv_v6(gym.Env):
                 self._physics.model.ptr,
                 self._physics.data.ptr,
             )
+        
+            self._viewer.cam.lookat[:]=[0.15, 0.25, 0.2]
+            self._viewer.cam.distance = 1.75
+            self._viewer.cam.elevation = -20
+            self._viewer.cam.azimuth = 180
+        
         if self._step_start is None and self._render_mode == "human":
             # initialize step timer
             self._step_start = time.time()
@@ -543,6 +549,7 @@ class UR5eEnv_v6(gym.Env):
 
         else:  # rgb_array
             return self._physics.render()
+
 
     def close(self) -> None:
         """

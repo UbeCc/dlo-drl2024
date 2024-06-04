@@ -49,7 +49,7 @@ class UR5eEnv_v5(gym.Env):
         self.control_frequency = 15
         self.fix_target_seed = False
         self.fix_target_seed = True
-        self.fixed_target_seed = 1
+        self.fixed_target_seed = 3
         assert render_mode is None or render_mode in self.metadata["render_modes"]
         self._render_mode = render_mode
 
@@ -484,6 +484,12 @@ class UR5eEnv_v5(gym.Env):
                 self._physics.model.ptr,
                 self._physics.data.ptr,
             )
+        
+            self._viewer.cam.lookat[:]=[0.15, 0.25, 0.2]
+            self._viewer.cam.distance = 1.75
+            self._viewer.cam.elevation = -20
+            self._viewer.cam.azimuth = 180
+        
         if self._step_start is None and self._render_mode == "human":
             # initialize step timer
             self._step_start = time.time()
