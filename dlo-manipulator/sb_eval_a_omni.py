@@ -284,7 +284,11 @@ if __name__ == "__main__":
     # CUDA_VISIBLE_DEVICES=2  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_forty_targets__2024-06-02-13-31-23_seed3407_noisesigma0.3_lr0.0005_envv6_net256_256" --render_mode=human --env=UR5eEnv-v5-test 
     
     # CUDA_VISIBLE_DEVICES=3  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_forty_targets__2024-06-02-13-31-23_seed3407_noisesigma0.3_lr0.0005_envv6_net256_256" --render_mode=rgb_array --env=UR5eEnv-v5-test
-    # CUDA_VISIBLE_DEVICES=4  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_four_targets_new__2024-06-02-19-02-42_seed3407_noisesigma0.3_lr0.0005_envv5_net256_256" --render_mode=rgb_array --env=UR5eEnv-v5-test
+    
+    # CUDA_VISIBLE_DEVICES=0  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_four_targets_curri_2_new__2024-06-03-05-01-28_seed3407_noisesigma0.3_lr0.0005_envv5_net256_256" --render_mode=human --env=UR5eEnv-v5-test
+    
+    # CUDA_VISIBLE_DEVICES=0  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_forty_targets_curri_2_new__2024-06-03-05-03-09_seed3407_noisesigma0.3_lr0.0005_envv6_net256_256" --render_mode=rgb_array --env=UR5eEnv-v5-test
+    # CUDA_VISIBLE_DEVICES=1  python sb_eval_a_omni.py --algo_name=SAC --log_dir="./logs_SAC/test_four_targets_new__2024-06-02-19-02-42_seed3407_noisesigma0.3_lr0.0005_envv5_net256_256" --render_mode=human --env=UR5eEnv-v5-test
     
     # 
     

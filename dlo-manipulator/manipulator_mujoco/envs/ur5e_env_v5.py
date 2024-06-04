@@ -47,6 +47,9 @@ class UR5eEnv_v5(gym.Env):
         self.steps = 0
         self.control_steps = 0
         self.control_frequency = 15
+        self.fix_target_seed = False
+        self.fix_target_seed = True
+        self.fixed_target_seed = 1
         assert render_mode is None or render_mode in self.metadata["render_modes"]
         self._render_mode = render_mode
 
@@ -170,11 +173,18 @@ class UR5eEnv_v5(gym.Env):
         
         target_seed = self.target_seed
         
+        if self.fix_target_seed:
+            target_seed = self.fixed_target_seed
+        
         # target_seed = 0 ## 
         self.target_pos = self.generate_target_pos(seed=target_seed)
         
+        
+        
     
         self.target_seed = (self.target_seed  + 1) % self.num_targets
+        
+        
         
         # reset physics
         with self._physics.reset_context():
